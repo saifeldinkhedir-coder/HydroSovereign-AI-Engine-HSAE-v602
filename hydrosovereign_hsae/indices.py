@@ -338,3 +338,192 @@ def classify_risk(atdi: float) -> str:
     if atdi >= RISK_MODERATE:
         return "MODERATE"
     return "LOW"
+
+
+# ══════════════════════════════════════════════════════════════════
+#  AFSF — Alkhedir Forensic Signal Factor (EMPIRICAL)
+#  Separates human-induced from natural signal using TWO independent
+#  observed anomaly series. Returns INSUFFICIENT_DATA without them.
+# ══════════════════════════════════════════════════════════════════
+def compute_afsf(observed_anomaly: DataPoint,
+                 natural_anomaly: DataPoint,
+                 signal_range: DataPoint) -> ProvenancedResult:
+    """
+    Forensic Signal Factor = |observed_anomaly - natural_anomaly| / range,
+    clipped to [0,1]. Measures how far the observed signal departs from the
+    natural-baseline signal, normalised by the signal range.
+
+    All three inputs must be observation-grade and independent (the
+    observed and natural anomalies must not share a source). Returns
+    INSUFFICIENT_DATA otherwise. EMPIRICAL measure.
+    """
+    gate = require_legal_grade(
+        "AFSF", observed_anomaly, natural_anomaly, signal_range)
+    if gate is not None:
+        return gate
+    if (observed_anomaly.source == natural_anomaly.source
+            and observed_anomaly.source_ref == natural_anomaly.source_ref):
+        return insufficient(
+            "AFSF",
+            "observed and natural anomalies share an identical source; "
+            "independent series are required",
+            [observed_anomaly, natural_anomaly, signal_range])
+    rng = float(signal_range.value)
+    if rng <= 0:
+        return insufficient("AFSF", "signal range must be positive",
+                            [observed_anomaly, natural_anomaly, signal_range])
+    afsf = abs(float(observed_anomaly.value)
+               - float(natural_anomaly.value)) / rng
+    afsf = max(0.0, min(1.0, afsf))
+    return ProvenancedResult(
+        metric="AFSF", value=round(afsf, 3), status="OK",
+        inputs=[observed_anomaly, natural_anomaly, signal_range],
+        method="|observed_anomaly - natural_anomaly| / range, clipped [0,1]",
+    )
+
+
+# ══════════════════════════════════════════════════════════════════
+#  AHLB — Alkhedir HBV-Legal Bridge (EMPIRICAL / interpretive)
+#  Translates real HBV-96 model skill (sim vs obs) into a documented
+#  legal-confidence score. Requires genuine paired sim/obs series.
+# ══════════════════════════════════════════════════════════════════
+def compute_ahlb(q_sim_series: "list[DataPoint]",
+                 q_obs_series: "list[DataPoint]") -> ProvenancedResult:
+    """
+    HBV-Legal Bridge. Computes the Nash-Sutcliffe Efficiency (NSE) between
+    a genuine HBV-96 simulated series and an independent observed series,
+    then maps NSE to a [0,1] legal-confidence score:
+
+        AHLB = clip(NSE, 0, 1)
+
+    This expresses how much legal weight the modelled hydrology can bear:
+    high model skill -> higher confidence that modelled deficits reflect
+    reality. Requires real paired series of equal length; observed series
+    must be observation-grade. INSUFFICIENT_DATA otherwise. The score is
+    interpretive and must be reported with its NSE.
+    """
+    if not q_sim_series or not q_obs_series:
+        return insufficient("AHLB", "empty simulated or observed series")
+    if len(q_sim_series) != len(q_obs_series):
+        return insufficient(
+            "AHLB",
+            f"series length mismatch: {len(q_sim_series)} sim vs "
+            f"{len(q_obs_series)} obs")
+    # observed series must be observation-grade
+    gate = require_legal_grade("AHLB", *q_obs_series)
+    if gate is not None:
+        return gate
+
+    sim = [float(p.value) for p in q_sim_series]
+    obs = [float(p.value) for p in q_obs_series]
+    mean_obs = sum(obs) / len(obs)
+    denom = sum((o - mean_obs) ** 2 for o in obs)
+    if denom == 0:
+        return insufficient(
+            "AHLB", "observed variance is zero; NSE undefined",
+            q_sim_series + q_obs_series)
+    numer = sum((s - o) ** 2 for s, o in zip(sim, obs))
+    nse = 1.0 - numer / denom
+    ahlb = max(0.0, min(1.0, nse))
+    return ProvenancedResult(
+        metric="AHLB", value=round(ahlb, 3), status="OK",
+        inputs=list(q_obs_series),
+        method="clip(NSE(sim,obs), 0, 1)",
+        detail=f"NSE={round(nse, 3)} over {len(obs)} paired periods",
+    )
+
+
+# ══════════════════════════════════════════════════════════════════
+#  ASI — Alkhedir Sovereignty Index (NORMATIVE composite)
+#  Explicit normalised composite of governance-balance factors. Like
+#  AWGI: factors in [0,1], justified weights summing to 1, sensitivity.
+# ══════════════════════════════════════════════════════════════════
+ASI_DEFAULT_WEIGHTS = {
+    "equity":       0.40,   # equitable-utilisation balance (higher = fairer)
+    "cooperation":  0.35,   # institutional cooperation level
+    "data_sharing": 0.25,   # transparency / data-exchange practice
+}
+
+
+def compute_asi(equity_balance: float,
+                cooperation_level: float,
+                data_sharing_level: float,
+                weights: "dict | None" = None) -> dict:
+    """
+    Alkhedir Sovereignty Index — explicit normalised governance composite.
+
+    All inputs in [0,1]; higher ASI = healthier shared-sovereignty balance
+    (the inverse sense of a risk index). Weights are explicit, sum to 1,
+    and overridable for sensitivity testing. NORMATIVE — not an empirical
+    measurement.
+    """
+    w = dict(ASI_DEFAULT_WEIGHTS if weights is None else weights)
+    if abs(sum(w.values()) - 1.0) > 1e-6:
+        raise ValueError(f"ASI weights must sum to 1.0 (got {sum(w.values())})")
+    factors = {
+        "equity":       _clip01(equity_balance),
+        "cooperation":  _clip01(cooperation_level),
+        "data_sharing": _clip01(data_sharing_level),
+    }
+    score = sum(w[k] * factors[k] for k in factors)
+    return {
+        "metric": "ASI",
+        "score": round(score, 4),
+        "factors": {k: round(v, 4) for k, v in factors.items()},
+        "weights": w,
+        "kind": "normative-composite",
+        "note": "Normative governance index; higher = healthier balance. "
+                "Not an empirical measurement.",
+    }
+
+
+# ══════════════════════════════════════════════════════════════════
+#  ATCI — Alkhedir Treaty Compliance Index (NORMATIVE composite)
+#  Explicit 0-100 composite summarising compliance posture across the
+#  relevant UNWC articles. Transparent inputs, justified weights.
+# ══════════════════════════════════════════════════════════════════
+ATCI_DEFAULT_WEIGHTS = {
+    "no_harm":       0.30,   # Art.7 posture (1 - transparency_deficit)
+    "equitable_use": 0.25,   # Art.5 posture (ASI)
+    "data_exchange": 0.20,   # Art.9 posture (data-sharing)
+    "eco_flow":      0.15,   # Art.20 posture (1 - flow_deficit)
+    "dispute_mech":  0.10,   # Art.33 posture (has dispute mechanism)
+}
+
+
+def compute_atci(no_harm_posture: float,
+                 equitable_use_posture: float,
+                 data_exchange_posture: float,
+                 eco_flow_posture: float,
+                 dispute_mech_posture: float,
+                 weights: "dict | None" = None) -> dict:
+    """
+    Alkhedir Treaty Compliance Index — explicit 0-100 composite of
+    per-article compliance postures (each in [0,1], higher = better
+    compliance). Weights explicit, sum to 1, overridable. NORMATIVE.
+
+    Returns a 0-100 headline (score_100) plus the factor/weight breakdown
+    so the composite is fully transparent and reproducible.
+    """
+    w = dict(ATCI_DEFAULT_WEIGHTS if weights is None else weights)
+    if abs(sum(w.values()) - 1.0) > 1e-6:
+        raise ValueError(
+            f"ATCI weights must sum to 1.0 (got {sum(w.values())})")
+    factors = {
+        "no_harm":       _clip01(no_harm_posture),
+        "equitable_use": _clip01(equitable_use_posture),
+        "data_exchange": _clip01(data_exchange_posture),
+        "eco_flow":      _clip01(eco_flow_posture),
+        "dispute_mech":  _clip01(dispute_mech_posture),
+    }
+    score = sum(w[k] * factors[k] for k in factors)
+    return {
+        "metric": "ATCI",
+        "score": round(score, 4),
+        "score_100": round(score * 100, 1),
+        "factors": {k: round(v, 4) for k, v in factors.items()},
+        "weights": w,
+        "kind": "normative-composite",
+        "note": "Normative compliance composite (0-100); higher = better "
+                "compliance posture. Not an empirical measurement.",
+    }
