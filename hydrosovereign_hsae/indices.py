@@ -527,3 +527,45 @@ def compute_atci(no_harm_posture: float,
         "note": "Normative compliance composite (0-100); higher = better "
                 "compliance posture. Not an empirical measurement.",
     }
+
+
+# ══════════════════════════════════════════════════════════════════
+#  Independence check — honest correlation matrix of the indices
+# ══════════════════════════════════════════════════════════════════
+def correlation_matrix(index_value_rows: "list[dict]") -> dict:
+    """
+    Pairwise Pearson correlations across basins, so reviewers can SEE
+    which indices carry independent information and which are redundant.
+    Honest disclosure — not a claim of independence.
+
+    Parameters
+    ----------
+    index_value_rows : list of dict
+        One dict per basin mapping index name -> value (floats).
+
+    Returns
+    -------
+    dict mapping "A|B" -> Pearson r (pairs with >=3 shared points).
+    """
+    if not index_value_rows:
+        return {}
+    keys = sorted({k for row in index_value_rows for k in row})
+    out = {}
+    for i, a in enumerate(keys):
+        for b in keys[i + 1:]:
+            xs, ys = [], []
+            for row in index_value_rows:
+                if a in row and b in row \
+                        and row[a] is not None and row[b] is not None:
+                    xs.append(float(row[a]))
+                    ys.append(float(row[b]))
+            if len(xs) < 3:
+                continue
+            n = len(xs)
+            mx, my = sum(xs) / n, sum(ys) / n
+            cov = sum((x - mx) * (y - my) for x, y in zip(xs, ys))
+            vx = sum((x - mx) ** 2 for x in xs) ** 0.5
+            vy = sum((y - my) ** 2 for y in ys) ** 0.5
+            if vx > 0 and vy > 0:
+                out[f"{a}|{b}"] = round(cov / (vx * vy), 3)
+    return out

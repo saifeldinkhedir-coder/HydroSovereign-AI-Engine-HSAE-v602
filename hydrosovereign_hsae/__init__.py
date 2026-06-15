@@ -26,6 +26,7 @@ from .indices import (
     hifd_for_basin, tdi_for_basin, atdi_for_basin,
     compute_awgi, awgi_sensitivity, classify_risk,
     compute_afsf, compute_ahlb, compute_asi, compute_atci,
+    correlation_matrix,
 )
 from .legal import get_triggered_articles, get_legal_assessment
 from .treaty_classifier import TreatyClassifier, MODEL_CARD
@@ -38,7 +39,8 @@ __all__ = [
     "compute_tdi", "compute_hifd", "compute_atdi",
     "hifd_for_basin", "tdi_for_basin", "atdi_for_basin",
     "compute_awgi", "awgi_sensitivity", "classify_risk",
-    "compute_afsf", "compute_ahlb", "compute_asi", "compute_atci",
+    "compute_asi", "compute_ahlb", "compute_afsf", "compute_atci",
+    "correlation_matrix",
     "get_triggered_articles", "get_legal_assessment",
     "TreatyClassifier", "MODEL_CARD",
     "validate_model_skill",
