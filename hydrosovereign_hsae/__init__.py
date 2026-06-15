@@ -29,6 +29,7 @@ from .indices import (
 )
 from .legal import get_triggered_articles, get_legal_assessment
 from .treaty_classifier import TreatyClassifier, MODEL_CARD
+from .validation import validate_model_skill
 
 __all__ = [
     "DataPoint", "DataQuality", "ProvenancedResult",
@@ -40,4 +41,5 @@ __all__ = [
     "compute_afsf", "compute_ahlb", "compute_asi", "compute_atci",
     "get_triggered_articles", "get_legal_assessment",
     "TreatyClassifier", "MODEL_CARD",
+    "validate_model_skill",
 ]
