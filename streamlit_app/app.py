@@ -121,7 +121,7 @@ try:
 except Exception as e:
     _HAS_UPLOAD=False
     import streamlit as _st
-    def render_upload_real_data(): _st.error(f"upload_real_data.py not found: {e}")
+    def render_upload_real_data(): _st.error(f"upload_real_data.py not found")
 
 # ── Sensor #10 — Microsoft Planetary Computer ─────────────────────────────────
 try:

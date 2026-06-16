@@ -1,0 +1,18 @@
+{
+  "basin_id": "blue_nile_gerd",
+  "year": 2023,
+  "NSE_cal": -3.539116,
+  "KGE_cal": -0.332296,
+  "NSE_val": -17.696998,
+  "KGE_val": -0.854187,
+  "params": {
+    "FC": 400.0,
+    "LP": 0.4186,
+    "BETA": 4.8,
+    "ALPHA": 0.1,
+    "K1": 0.05,
+    "K2": 0.0104,
+    "MAXBAS": 5
+  },
+  "source": "SCE-UA calibrated, GPM IMERG forcing"
+}
