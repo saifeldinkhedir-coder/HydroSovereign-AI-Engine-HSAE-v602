@@ -1,0 +1,10 @@
+streamlit>=1.30
+hydrosovereign-hsae>=6.7.3
+numpy
+pandas
+plotly
+folium
+streamlit-folium
+scikit-learn
+joblib
+earthengine-api
