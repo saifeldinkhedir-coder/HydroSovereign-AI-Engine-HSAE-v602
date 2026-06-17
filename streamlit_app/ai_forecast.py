@@ -41,7 +41,13 @@ def tdi_to_risk(tdi: float) -> str:
 # ── Simplified AI Models (no external ML libs required) ──────────────────────
 
 class SimpleRFModel:
-    """Simplified Random Forest — weighted ensemble of decision rules."""
+    """Heuristic projection rule (NOT a trained Random Forest).
+
+    Peer-review Problem #4: a fixed formula named after an ML model is not
+    a trained model. This is a transparent rule-based projection used only
+    for illustrative climate-scenario exploration; it is not fitted to data
+    and must not be reported as a trained classifier/regressor.
+    """
 
     def predict(self, features: Dict) -> float:
         tdi_base    = features.get("tdi_base", 0.30)
@@ -65,7 +71,8 @@ class SimpleRFModel:
 
 
 class SimpleMLPModel:
-    """Simplified MLP — 2-layer neural net approximation."""
+    """Heuristic nonlinear rule (NOT a trained MLP). Illustrative only;
+    not fitted to data (peer-review Problem #4)."""
 
     def predict(self, features: Dict) -> float:
         x = [
@@ -93,7 +100,8 @@ class SimpleMLPModel:
 
 
 class SimpleGBMModel:
-    """Simplified Gradient Boosting — additive residual correction."""
+    """Heuristic boosting-style rule (NOT a trained GBM). Illustrative
+    only; not fitted to data (peer-review Problem #4)."""
 
     def predict(self, features: Dict) -> float:
         tdi_base = features.get("tdi_base", 0.30)
@@ -156,13 +164,18 @@ def forecast_basin(basin: Dict, ssp_name: str,
         }
         preds = ensemble_predict(features)
 
-        # Add calibrated uncertainty band
-        random.seed(seed + h)
-        noise = random.uniform(0.02, 0.06) * frac
+        # NOTE (peer-review Problem #4): the previous code used
+        # random.uniform() and called it a "calibrated uncertainty band".
+        # Random noise is not a calibrated interval. We replace it with a
+        # transparent, deterministic illustrative spread that GROWS with the
+        # forecast horizon (further years => wider band) and is explicitly
+        # labelled as illustrative, not a statistically-calibrated CI.
+        spread = 0.03 + 0.01 * h          # deterministic, horizon-dependent
         results["forecasts"][2026 + h] = {
             **preds,
-            "ci_low":  max(0.0, preds["ensemble"] - noise),
-            "ci_high": min(1.0, preds["ensemble"] + noise),
+            "ci_low":  max(0.0, preds["ensemble"] - spread),
+            "ci_high": min(1.0, preds["ensemble"] + spread),
+            "ci_kind": "illustrative (not a calibrated confidence interval)",
             "risk":    tdi_to_risk(preds["ensemble"]),
         }
 

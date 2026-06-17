@@ -12,7 +12,7 @@ Sources:
   3. Sentinel-1 GRD         — SAR VV backscatter (dB)
   4. Sentinel-2 SR          — NDWI, NDVI (cloud-masked)
   5. SMAP / Open-Meteo SM   — soil moisture (m³/m³)
-  6. GloFAS ERA5 v4         — river discharge (m³/s, derived)
+  6. GPM-derived runoff proxy — NOT GloFAS, NOT independent (see note)
   7. Open-Meteo ERA5        — air temperature (°C)
 """
 
@@ -312,15 +312,29 @@ def process_basin(basin_id, cfg):
         result["temperature"] = {"error": str(e), "T_C": [], "mean_T": 25.0, "months": [], "n_months": 0}
         result["smap"]        = {"error": str(e), "sm_m3m3": [], "mean_sm": 0.2, "months": [], "n_months": 0}
 
-    # 6 — GloFAS ERA5 (derived: GPM × runoff_c × area)
+    # 6 — GPM-derived runoff PROXY (NOT GloFAS, NOT a reanalysis).
+    # Peer-review Problem #5: this series is rainfall x runoff coeff x area,
+    # i.e. scaled GPM precipitation with no routing/storage/baseflow. It is
+    # NOT the ECMWF GloFAS-ERA5 product and shares the model's own GPM
+    # forcing, so it must never be used as an independent validation
+    # benchmark. Labelled explicitly as a derived proxy.
     P_vals = result["gpm"].get("P_mm_day", [])
     if P_vals:
         Q = [round(p * rc * area / 86.4, 1) for p in P_vals]
-        result["glofas"] = {"Q_m3s": Q, "mean_Q": round(sum(Q)/max(len(Q),1), 1),
-                             "source": "Derived: GPM × runoff_c × area",
-                             "n_months": len(Q), "months": result["gpm"]["months"], "error": None}
+        result["runoff_proxy"] = {
+            "Q_m3s": Q, "mean_Q": round(sum(Q) / max(len(Q), 1), 1),
+            "source": "GPM-derived runoff proxy (P x runoff_c x area) - "
+                      "NOT GloFAS, NOT independent of model forcing",
+            "is_independent_benchmark": False,
+            "n_months": len(Q), "months": result["gpm"]["months"],
+            "error": None}
+        # Backward-compat alias, but keep the honest source string.
+        result["glofas"] = result["runoff_proxy"]
     else:
-        result["glofas"] = {"error": "No GPM data", "Q_m3s": [], "mean_Q": 0, "months": [], "n_months": 0}
+        result["runoff_proxy"] = {"error": "No GPM data", "Q_m3s": [],
+                                  "mean_Q": 0, "months": [], "n_months": 0,
+                                  "is_independent_benchmark": False}
+        result["glofas"] = result["runoff_proxy"]
 
     elapsed = time.time() - t0
     s = {k: ("✅" if result.get(k,{}).get("n_months",0)>0 else "❌")

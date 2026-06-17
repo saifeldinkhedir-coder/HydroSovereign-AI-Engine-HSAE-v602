@@ -316,11 +316,44 @@ def compute_ahifd(basin: dict, n_days: int = 1825) -> Dict:
     rain, temp, pet = generate_forcing(basin, n_days + warm)
     hbv = run_hbv(rain, temp, pet, params, area_km2, warm_up=warm)
 
-    # Simulated observed flow: Q_nat × (1 - TDI) as proxy
+    # Q_nat is the HBV-simulated naturalised flow.
     q_nat_list = hbv["Qsim_BCM"]
-    q_obs_list = [max(0.0, q * (1.0 - tdi)) for q in q_nat_list]
 
-    # AHIFD per day
+    # IMPORTANT (peer-review Problem #3): a genuine Human-Induced Flow
+    # Deficit needs an INDEPENDENT observed downstream flow (Q_obs).
+    # The previous code synthesised Q_obs = Q_nat*(1-TDI), which makes
+    # HIFD algebraically identical to a hand-entered TDI constant -- it
+    # measures nothing. We therefore do NOT fabricate Q_obs here. If the
+    # basin record carries observation-grade Q_obs we use it; otherwise we
+    # return a clearly-labelled scenario with no HIFD value and no legal
+    # flags (the honest output is "insufficient data").
+    q_obs_list = basin.get("q_obs_observed_bcm")  # only if real obs exist
+    has_obs = (isinstance(q_obs_list, (list, tuple))
+               and len(q_obs_list) == len(q_nat_list)
+               and len(q_obs_list) > 0)
+
+    if not has_obs:
+        return {
+            "basin":        basin.get("name", "?"),
+            "status":       "INSUFFICIENT_DATA",
+            "mean_HIFD":    None,
+            "Art5_flag":    False,
+            "Art7_flag":    False,
+            "Art12_flag":   False,
+            "annual":       [],
+            "Q_nat_total":  round(sum(q_nat_list), 2),
+            "Q_obs_total":  None,
+            "HIFD_total":   None,
+            "params":       params,
+            "note": ("No independent observed downstream discharge (Q_obs) "
+                     "is available for this basin, so HIFD is not computed. "
+                     "HIFD requires real gauge data independent of the "
+                     "model; a synthetic Q_obs would make HIFD equal to a "
+                     "constant and is not used. Provide observation-grade "
+                     "Q_obs to compute a genuine deficit."),
+        }
+
+    # Real-observation path: HIFD from independent Q_nat and Q_obs.
     hifd_pct = []
     for qn, qo in zip(q_nat_list, q_obs_list):
         if qn > 1e-9:
