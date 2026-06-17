@@ -1,9 +1,23 @@
 """
 basins_data.py — HSAE v6.0 Complete Basin Registry
 ====================================================
-26 transboundary basins — ALL fields complete.
+26 transboundary basins.
+
+IMPORTANT (peer-review Problem #1/#3): the "tdi" field below is an
+ILLUSTRATIVE SCENARIO PRIOR for each basin, NOT a measured Transparency
+Deficit Index and NOT a computed result. It exists only to seed scenario
+exploration and demonstrations. A real TDI/ATDI must be computed from
+observation-grade inflow/outflow series via the provenance engine
+(hydrosovereign.compute_tdi / compute_atdi); where such observations are
+absent the engine returns INSUFFICIENT_DATA. Pages that read "tdi" must
+treat it as a scenario prior and label it accordingly; it must never be
+displayed as a measurement or used to issue a legal verdict.
+
 Author: Seifeldin M.G. Alkhedir · ORCID: 0000-0003-0821-2991
 """
+
+# Alias documenting intent: every "tdi" key here is a scenario prior.
+# (Kept as "tdi" for backward compatibility with the 26-basin registry.)
 
 BASINS_26 = [
     # ── AFRICA ──────────────────────────────────────────────────────────────
