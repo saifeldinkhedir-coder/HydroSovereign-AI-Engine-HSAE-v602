@@ -72,10 +72,19 @@ def render_negotiation_page(basin):
 
     if st.button("Predict treaty property", type="primary"):
         if tc.is_available:
-            p = tc.predict_proba(int(n_sig), int(year), int(btc))
-            st.metric(
-                "P(treaty includes a conflict-resolution mechanism)",
-                f"{p:.3f}")
-            st.caption("Real model output. Modest skill, honestly reported.")
+            try:
+                p = tc.predict_proba(int(n_sig), int(year), int(btc))
+                st.metric(
+                    "P(treaty includes a conflict-resolution mechanism)",
+                    f"{p:.3f}")
+                st.caption("Real model output. Modest skill, honestly "
+                           "reported.")
+            except Exception as exc:  # noqa: BLE001
+                st.error(
+                    "The trained model could not be loaded in this "
+                    "environment (likely a scikit-learn version mismatch). "
+                    "The model card metrics above are still valid; live "
+                    "prediction is temporarily unavailable.")
+                st.caption(f"Details: {type(exc).__name__}")
         else:
             st.error("Model file not found.")
