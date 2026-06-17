@@ -53,10 +53,6 @@ MODEL_CARD: Dict[str, object] = {
 }
 
 
-class ModelUnavailableError(RuntimeError):
-    """Raised when the trained model cannot be loaded in this environment."""
-
-
 class TreatyClassifier:
     """Loads the trained TFDD CRM classifier and exposes predictions."""
 
@@ -67,16 +63,6 @@ class TreatyClassifier:
     @property
     def is_available(self) -> bool:
         return self._path.exists()
-
-    @property
-    def is_loadable(self) -> bool:
-        """True only if the model file exists AND unpickles in this
-        environment (guards against scikit-learn version mismatches)."""
-        try:
-            self._load()
-            return True
-        except Exception:  # noqa: BLE001
-            return False
 
     def _load(self):
         if self._model is None:
@@ -92,29 +78,14 @@ class TreatyClassifier:
         """
         Probability that a treaty with these features includes a
         conflict-resolution mechanism. Returns a real model output.
-
-        Raises ModelUnavailableError if the bundled model cannot be loaded
-        in this environment (e.g. a scikit-learn version mismatch), so
-        callers can degrade gracefully instead of crashing.
         """
-        try:
-            model = self._load()
-        except Exception as exc:  # noqa: BLE001
-            raise ModelUnavailableError(
-                "trained model could not be loaded in this environment "
-                f"({type(exc).__name__}); it may have been saved with a "
-                "different scikit-learn version") from exc
+        model = self._load()
         x = [[float(n_signatories), float(year), float(basin_treaty_count)]]
         return float(model.predict_proba(x)[0][1])
 
     def predict(self, n_signatories: int, year: int,
                 basin_treaty_count: int) -> int:
-        try:
-            model = self._load()
-        except Exception as exc:  # noqa: BLE001
-            raise ModelUnavailableError(
-                "trained model could not be loaded in this environment "
-                f"({type(exc).__name__})") from exc
+        model = self._load()
         x = [[float(n_signatories), float(year), float(basin_treaty_count)]]
         return int(model.predict(x)[0])
 

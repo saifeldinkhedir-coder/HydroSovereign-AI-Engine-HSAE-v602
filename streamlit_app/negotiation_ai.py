@@ -3,7 +3,7 @@ negotiation_ai.py — Treaty-feature classifier page (HONEST ML)
 ====================================================================
 Replaces the old "NegotiationAI trained on 478 cases" claim. This page
 uses the GENUINELY trained TFDD classifier from the clean engine
-(hydrosovereign_hsae.TreatyClassifier) and shows its honest model card.
+(hydrosovereign.TreatyClassifier) and shows its honest model card.
 
 Addresses review objection #4: the model is really trained, metrics are
 reported honestly, and it predicts a documented treaty property — NOT
@@ -15,7 +15,7 @@ Author: Seifeldin M.G. Alkhedir - ORCID: 0000-0003-0821-2991
 import streamlit as st
 
 try:
-    from hydrosovereign_hsae import TreatyClassifier, MODEL_CARD
+    from hydrosovereign import TreatyClassifier, MODEL_CARD
     _HAS_MODEL = True
 except Exception:  # noqa: BLE001
     _HAS_MODEL = False
@@ -35,7 +35,7 @@ def render_negotiation_page(basin):
 
     if not _HAS_MODEL:
         st.error("Trained model unavailable in this environment "
-                 "(install hydrosovereign-hsae).")
+                 "(install hydrosovereign).")
         return
 
     tc = TreatyClassifier()

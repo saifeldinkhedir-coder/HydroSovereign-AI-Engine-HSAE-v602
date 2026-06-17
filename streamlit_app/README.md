@@ -1,7 +1,7 @@
 # HydroSovereign AI Engine (HSAE) — Live Platform (v6.0.14)
 
 [![Streamlit](https://img.shields.io/badge/Streamlit-live-FF4B4B?logo=streamlit&logoColor=white)](https://hydrosovereign-ai-engine-hsae-v602.streamlit.app/)
-[![Engine](https://img.shields.io/badge/engine-hydrosovereign--hsae%206.7.3-3775A9?logo=pypi&logoColor=white)](https://pypi.org/project/hydrosovereign-hsae/)
+[![Engine](https://img.shields.io/badge/engine-hydrosovereign%206.8.1-3775A9?logo=pypi&logoColor=white)](https://pypi.org/project/hydrosovereign/)
 [![License](https://img.shields.io/badge/license-GPL--3.0-green.svg)](../LICENSE)
 [![ORCID](https://img.shields.io/badge/ORCID-0000--0003--0821--2991-A6CE39?logo=orcid&logoColor=white)](https://orcid.org/0000-0003-0821-2991)
 
@@ -153,7 +153,7 @@ Legal, export & ops pages:
 
 ## The engine underneath
 
-The platform calls **`hydrosovereign-hsae` 6.7.3** for all
+The platform calls **`hydrosovereign` 6.8.1** for all
 legally-relevant computation:
 
 ```python
@@ -251,12 +251,12 @@ streamlit_app/
   year      = {2026},
   version   = {6.0.14},
   publisher = {PyPI + QGIS Plugin Repository + Streamlit},
-  url       = {https://pypi.org/project/hydrosovereign-hsae/},
+  url       = {https://pypi.org/project/hydrosovereign/},
   orcid     = {0000-0003-0821-2991}
 }
 ```
 
 ---
 
-*HSAE live platform - v6.0.14 - engine `hydrosovereign-hsae` 6.7.3 - GPL-3.0 -
+*HSAE live platform - v6.0.14 - engine `hydrosovereign` 6.8.1 - GPL-3.0 -
 Seifeldin M.G. Alkhedir - University of Khartoum - ORCID 0000-0003-0821-2991*
