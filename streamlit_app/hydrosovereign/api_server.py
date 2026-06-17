@@ -223,7 +223,7 @@ def compute_wqi_endpoint(req: WQIRequest):
 
 @app.post("/negotiate", tags=["AI"])
 def negotiate_endpoint(req: NegotiationRequest):
-    """Negotiation AI prediction (GBM trained on 306 TFDD/ICOW cases)."""
+    """Heuristic negotiation-pathway score (non-trained; see TreatyClassifier)."""
     from .ai.negotiation import NegotiationAI
     ai = NegotiationAI()
     return ai.predict(

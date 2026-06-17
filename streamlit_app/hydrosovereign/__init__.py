@@ -20,7 +20,7 @@ DOI:     10.5281/zenodo.19180160
 License: GPL-3.0
 """
 
-__version__ = "6.8.1"
+__version__ = "6.8.2"
 __author__ = "Seifeldin M.G. Alkhedir"
 __email__ = "saifeldinkhedir@gmail.com"
 __orcid__ = "0000-0003-0821-2991"

@@ -15,4 +15,4 @@ requests>=2.31.0
 openpyxl>=3.1.0
 earthengine-api>=0.1.400
 joblib>=1.3.0
-hydrosovereign>=6.8.1
+hydrosovereign>=6.8.2

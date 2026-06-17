@@ -1,26 +1,48 @@
 """
-hydrosovereign/ai/negotiation.py — NegotiationAI
-==================================================
-GBM-based negotiation pathway prediction trained on
-478 TFDD/ICOW historical transboundary water dispute outcomes.
+hydrosovereign/ai/negotiation.py — NegotiationAI (DEPRECATED heuristic)
+=======================================================================
+A transparent, NON-trained heuristic that maps ATDI/AHIFD to an
+indicative negotiation-pathway score. It is NOT a trained statistical
+model and makes no use of historical training data.
+
+For a genuinely trained, validated model use
+``hydrosovereign.TreatyClassifier`` (GradientBoosting trained on the TFDD
+treaties database, with an honest model card). That classifier predicts a
+documented treaty property (presence of a conflict-resolution mechanism),
+not negotiation success — which is not learnable from a database of
+concluded treaties.
+
+This module is retained only for backward compatibility and will be
+REMOVED in v7.0.0. Importing it raises a DeprecationWarning.
 
 Author:  Seifeldin M.G. Alkhedir · ORCID: 0000-0003-0821-2991
 """
 from __future__ import annotations
 from typing import Dict
+import warnings as _warnings
+
+_warnings.warn(
+    "hydrosovereign.ai.negotiation.NegotiationAI is a non-trained heuristic "
+    "(not a statistical model) and is deprecated; use "
+    "hydrosovereign.TreatyClassifier for the genuinely trained model. "
+    "This module will be removed in v7.0.0.",
+    DeprecationWarning, stacklevel=2,
+)
 
 
 class NegotiationAI:
-    """AI-powered negotiation pathway recommendation.
+    """Transparent heuristic for an indicative negotiation-pathway score.
 
-    Trained on 478 TFDD/ICOW historical outcomes (1950-2020).
+    NOT a trained model: the score is a fixed, documented linear rule, not
+    parameters fit to data. The weights below are declared, not learned.
+    For a trained, validated model use ``hydrosovereign.TreatyClassifier``.
 
     Examples
     --------
     >>> ai = NegotiationAI()
     >>> p = ai.predict(atdi=43.5, ahifd=20.0, n_countries=3, dispute_level=4)
-    >>> print(f"P(Negotiation) = {p:.0%}")   # → 58%
-    >>> print(ai.pathway)                     # → Mediation
+    >>> print(f"heuristic score = {p:.0%}")
+    >>> print(ai.pathway)
     """
 
     PATHWAY_MAP = {
@@ -43,7 +65,11 @@ class NegotiationAI:
         dispute_level: int   = 2,
         hifd:          float = 0.0,
     ) -> float:
-        """Predict probability of successful negotiation.
+        """Heuristic negotiation-pathway score (NOT a trained prediction).
+
+        Computes a transparent, fixed linear score from the inputs. The
+        weights are declared (not learned). For a trained model use
+        ``hydrosovereign.TreatyClassifier``.
 
         Parameters
         ----------
@@ -55,7 +81,7 @@ class NegotiationAI:
 
         Returns
         -------
-        float — P(successful negotiation) in [0.05, 0.95]
+        float — heuristic score in [0.05, 0.95] (NOT a calibrated probability)
         """
         _ahifd = ahifd if ahifd > 0 else hifd
         p = round(max(0.05, min(0.95,
