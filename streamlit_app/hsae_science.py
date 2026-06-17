@@ -721,7 +721,7 @@ def render_science_page(df: pd.DataFrame, basin: dict) -> None:
             linecolor="#888", linewidth=1.5, mirror=True,
         )
 
-        st.plotly_chart(_fig3, use_container_width=True)
+        st.plotly_chart(_fig3, width='stretch')
 
         # ── Caption ───────────────────────────────────────────────────────────
         st.caption(
@@ -766,7 +766,7 @@ def render_science_page(df: pd.DataFrame, basin: dict) -> None:
                             annotation_text="Water threshold (0.2)")
             fig_n.update_layout(template="plotly_dark", height=350,
                                 title="Sentinel-2 NDWI Time-Series")
-            st.plotly_chart(fig_n, use_container_width=True)
+            st.plotly_chart(fig_n, width='stretch')
         st.latex(r"\mathrm{NDWI} = \frac{B_{Green} - B_{NIR}}"
                  r"{B_{Green} + B_{NIR}}")
 
@@ -806,7 +806,7 @@ def render_science_page(df: pd.DataFrame, basin: dict) -> None:
             template="plotly_dark", height=430, barmode="relative",
             title="Full Water Balance — Inflow vs Losses",
         )
-        st.plotly_chart(fig_wb, use_container_width=True)
+        st.plotly_chart(fig_wb, width='stretch')
 
         st.latex(
             r"\Delta V = Q_{in} - Q_{out} - ET_0 \cdot A - S_{seep}"
@@ -856,7 +856,7 @@ def render_science_page(df: pd.DataFrame, basin: dict) -> None:
             title=f"Hydropower Output — {basin.get('id','')} "
                   f"(H={H_s}m, η={eta_s:.0%})",
         )
-        st.plotly_chart(fig_pw, use_container_width=True)
+        st.plotly_chart(fig_pw, width='stretch')
         st.latex(r"P = \rho \cdot g \cdot Q \cdot H \cdot \eta \quad [W]")
         st.caption(
             f"ρ = {RHO_WATER} kg/m³ | g = {G_ACC} m/s² | "
@@ -930,7 +930,7 @@ def render_science_page(df: pd.DataFrame, basin: dict) -> None:
             title=f"Monte Carlo Volume Uncertainty (n={n_sim:,})",
             yaxis_title="Volume (BCM)",
         )
-        st.plotly_chart(fig_mc, use_container_width=True)
+        st.plotly_chart(fig_mc, width='stretch')
 
         # Stats
         st.markdown("### Uncertainty Statistics")

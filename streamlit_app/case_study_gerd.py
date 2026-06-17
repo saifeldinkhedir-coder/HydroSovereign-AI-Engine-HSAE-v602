@@ -566,7 +566,7 @@ def render_case_study_page(basin: dict) -> None:
                 fig.add_hline(y=70, line_dash="dash", annotation_text="Art.12 threshold", line_color="#ef4444")
                 fig.update_layout(template="plotly_dark", height=380,
                     title="GERD TDI Evolution 2020–2023", yaxis_title="ATDI %")
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
         legal_timeline = gerd_legal_timeline()
         if legal_timeline:
             st.subheader("Legal Timeline")

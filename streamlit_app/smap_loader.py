@@ -541,7 +541,7 @@ def render_smap_page(basin: dict) -> None:
             fig.update_layout(template="plotly_dark", height=350,
                 title=f"SMAP Soil Moisture — {basin.get('name','')}",
                 yaxis_title="SM (m³/m³)")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
             m1,m2,m3 = st.columns(3)
             m1.metric("Mean SM", f"{sm.mean():.3f} m³/m³")
             m2.metric("Min SM",  f"{sm.min():.3f} m³/m³")

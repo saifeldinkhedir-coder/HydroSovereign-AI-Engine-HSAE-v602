@@ -835,7 +835,7 @@ def render_audit_page() -> None:
         st.dataframe(
             display_log[["timestamp","event_id","role","user_id","basin_id",
                           "action","data_hash","event_hash"]],
-            use_container_width=True,
+            width='stretch',
             height=380,
         )
 
@@ -849,7 +849,7 @@ def render_audit_page() -> None:
             template="plotly_dark", height=300,
             title="Daily Activity by Role",
         )
-        st.plotly_chart(fig_act, use_container_width=True)
+        st.plotly_chart(fig_act, width='stretch')
 
     # ── Tab 2: RBAC Roles ─────────────────────────────────────────────────────
     with tabs[1]:
@@ -894,7 +894,7 @@ aligned with the legitimate needs of that actor in water diplomacy.
             }
         df_matrix = pd.DataFrame(matrix_data).T
         df_matrix.columns = [ROLES[r]["label"] for r in df_matrix.columns]
-        st.dataframe(df_matrix, use_container_width=True)
+        st.dataframe(df_matrix, width='stretch')
 
     # ── Tab 3: Evidence Chain ─────────────────────────────────────────────────
     with tabs[2]:
@@ -929,7 +929,7 @@ aligned with the legitimate needs of that actor in water diplomacy.
             df_chain = pd.DataFrame(chain)
             st.dataframe(
                 df_chain[["timestamp","event_id","role","action","data_hash","event_hash"]],
-                use_container_width=True, height=320
+                width='stretch', height=320
             )
 
             # Hash verification visual

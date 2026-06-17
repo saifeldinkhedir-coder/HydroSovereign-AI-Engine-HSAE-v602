@@ -1167,7 +1167,7 @@ def render_gee_engine_panel(basin_name: str, basin_cfg: Dict) -> Optional[pd.Dat
                 m_cols[i % 4].metric(col_name.replace("_"," "), f"{val:.2f}")
 
         # Preview
-        st.dataframe(df.tail(12), use_container_width=True)
+        st.dataframe(df.tail(12), width='stretch')
 
         # Download
         csv_bytes = df.to_csv(index=False).encode("utf-8")

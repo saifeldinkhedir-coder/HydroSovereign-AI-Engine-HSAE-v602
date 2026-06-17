@@ -629,7 +629,7 @@ def render_pc_sensor_page(basin_cfg: dict, start_date: str, end_date: str):
                 plot_bgcolor="#0F1117", paper_bgcolor="#0F1117",
                 legend=dict(orientation="h", y=1.1),
             )
-            st.plotly_chart(fig_p, use_container_width=True)
+            st.plotly_chart(fig_p, width='stretch')
 
             fig_t = go.Figure()
             fig_t.add_trace(go.Scatter(
@@ -643,7 +643,7 @@ def render_pc_sensor_page(basin_cfg: dict, start_date: str, end_date: str):
                 title="Temperature 2m (°C)",
                 plot_bgcolor="#0F1117", paper_bgcolor="#0F1117",
             )
-            st.plotly_chart(fig_t, use_container_width=True)
+            st.plotly_chart(fig_t, width='stretch')
 
             # P vs ET₀ balance
             p_arr  = _df_p["P_mm"].values
@@ -689,7 +689,7 @@ def render_pc_sensor_page(basin_cfg: dict, start_date: str, end_date: str):
                 yaxis_title="Index value",
                 plot_bgcolor="#0F1117", paper_bgcolor="#0F1117",
             )
-            st.plotly_chart(fig_veg, use_container_width=True)
+            st.plotly_chart(fig_veg, width='stretch')
 
             st.info(
                 f"**Data source:** {opt.get('source','-')}  \n"

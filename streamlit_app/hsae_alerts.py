@@ -650,7 +650,7 @@ def render_alerts_page(df: pd.DataFrame | None, basin: dict) -> None:
 
         c_test, c_dispatch = st.columns(2)
 
-        if c_test.button("📨 Send Test Message", use_container_width=True):
+        if c_test.button("📨 Send Test Message", width='stretch'):
             if not bot_token or not chat_id:
                 st.error("Enter Bot Token and Chat ID first.")
             else:
@@ -694,7 +694,7 @@ def render_alerts_page(df: pd.DataFrame | None, basin: dict) -> None:
         n_alerts = len(alerts_ready)
         if c_dispatch.button(
             f"🚀 Dispatch {n_alerts} Alert(s)",
-            use_container_width=True,
+            width='stretch',
             type="primary",
         ):
             if not bot_token or not chat_id:
@@ -792,7 +792,7 @@ For local deployment, use `schedule` (Python) or `cron`.
 """)
 
         df_sched = scheduler_status_table()
-        st.dataframe(df_sched, use_container_width=True, hide_index=True)
+        st.dataframe(df_sched, width='stretch', hide_index=True)
 
         st.code(
             '''# HSAE v6.0.0 Production Scheduler

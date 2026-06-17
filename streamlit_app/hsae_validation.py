@@ -328,7 +328,7 @@ def render_validation_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             title=f"HSAE Simulation vs GRDC Observations — {basin.get('id','—')}",
             xaxis_title="Date", yaxis_title="Inflow / Discharge (BCM/day)"
         )
-        st.plotly_chart(fig_hyd, use_container_width=True)
+        st.plotly_chart(fig_hyd, width='stretch')
 
         # Scatter
         if "Q_obs" in merged.columns:
@@ -345,7 +345,7 @@ def render_validation_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
                 x0=merged["Q_obs"].min(), x1=merged["Q_obs"].max(),
                 y0=merged["Q_obs"].min(), y1=merged["Q_obs"].max(),
                 line=dict(color="#fbbf24", dash="dash", width=1.5))
-            st.plotly_chart(fig_sc, use_container_width=True)
+            st.plotly_chart(fig_sc, width='stretch')
 
     # ─ Tab 3: Flow Duration Curve ─────────────────────────────────────────────
     with metrics_tabs[2]:
@@ -376,7 +376,7 @@ def render_validation_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             yaxis_title="Discharge (BCM/day)",
             yaxis_type="log",
         )
-        st.plotly_chart(fig_fdc, use_container_width=True)
+        st.plotly_chart(fig_fdc, width='stretch')
         st.caption("Log-Y axis — FDC shape reveals high-flow, low-flow and flashiness regime.")
 
     # ─ Tab 4: Seasonal ────────────────────────────────────────────────────────
@@ -408,7 +408,7 @@ def render_validation_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             xaxis_title="Month", yaxis_title="BCM/day",
             barmode="group"
         )
-        st.plotly_chart(fig_seas, use_container_width=True)
+        st.plotly_chart(fig_seas, width='stretch')
 
         # Anomaly
         if "Q_obs" in m.columns:
@@ -422,7 +422,7 @@ def render_validation_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
                 title="Daily Anomaly (Simulated − Observed)",
                 yaxis_title="BCM/day"
             )
-            st.plotly_chart(fig_an, use_container_width=True)
+            st.plotly_chart(fig_an, width='stretch')
 
     # ─ Tab 5: Taylor Diagram ──────────────────────────────────────────────────
     with metrics_tabs[4]:
@@ -462,7 +462,7 @@ def render_validation_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
                     title="Residuals Over Time",
                     yaxis_title="Residual (BCM/day)"
                 )
-                st.plotly_chart(fig_r, use_container_width=True)
+                st.plotly_chart(fig_r, width='stretch')
 
             with col2:
                 # Residual histogram
@@ -474,7 +474,7 @@ def render_validation_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
                     color_discrete_sequence=["#60a5fa"]
                 )
                 fig_h.update_layout(height=320)
-                st.plotly_chart(fig_h, use_container_width=True)
+                st.plotly_chart(fig_h, width='stretch')
 
             # Obs vs Sim scatter
             col3, col4 = st.columns(2)
@@ -494,7 +494,7 @@ def render_validation_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
                     line=dict(color="#f59e0b", dash="dash"), name="1:1"
                 ))
                 fig_s.update_layout(height=320)
-                st.plotly_chart(fig_s, use_container_width=True)
+                st.plotly_chart(fig_s, width='stretch')
 
             with col4:
                 # Q-Q plot (sorted residuals vs normal quantiles)
@@ -519,7 +519,7 @@ def render_validation_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
                     xaxis_title="Theoretical Quantiles",
                     yaxis_title="Sample Quantiles"
                 )
-                st.plotly_chart(fig_qq, use_container_width=True)
+                st.plotly_chart(fig_qq, width='stretch')
 
             # Summary stats
             bias    = float(residuals.mean())
@@ -697,7 +697,7 @@ def _taylor_diagram(obs: np.ndarray, sim: np.ndarray, label: str = "Model") -> N
                  showarrow=False, font=dict(color="#94a3b8", size=10))
         ]
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     c1, c2, c3 = st.columns(3)
     c1.metric("Pearson r", f"{r_val:.4f}")
@@ -747,7 +747,7 @@ def _show_demo(df_sim: pd.DataFrame, basin: dict) -> None:
                                name="HSAE Sim", line=dict(color="#10b981")))
     fig_d.update_layout(template="plotly_dark", height=350,
                         title="Demo Hydrograph", yaxis_title="BCM/day")
-    st.plotly_chart(fig_d, use_container_width=True)
+    st.plotly_chart(fig_d, width='stretch')
 
 
 def _build_report_html(scores: dict, merged: pd.DataFrame, basin: dict) -> str:

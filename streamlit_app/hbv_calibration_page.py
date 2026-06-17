@@ -103,13 +103,13 @@ def render_calibration_page(basin: dict) -> None:
     fig_obs.update_layout(template="plotly_dark", height=320,
                           title="Observed Discharge — Cal/Val Split",
                           yaxis_title="Q (m³/s)")
-    st.plotly_chart(fig_obs, use_container_width=True)
+    st.plotly_chart(fig_obs, width='stretch')
 
     # ── 5. Run calibration ────────────────────────────────────────────────────
     st.subheader("🔬 Step 3 — Monte Carlo Calibration")
 
     if st.button(f"▶ Run Calibration (n={n_mc:,} samples)", type="primary",
-                 use_container_width=True):
+                 width='stretch'):
 
         with st.spinner(f"Running {n_mc:,} HBV parameter sets..."):
             # Generate synthetic forcing if no GEE/GRDC forcing available
@@ -257,7 +257,7 @@ def render_calibration_page(basin: dict) -> None:
             fig_cv.update_layout(template="plotly_dark", height=550,
                                   title=f"HBV Split-Sample (Cal NSE={nse_cal:.3f}, Val NSE={nse_val:.3f})")
             fig_cv.update_yaxes(title_text="Q (m³/s)")
-            st.plotly_chart(fig_cv, use_container_width=True)
+            st.plotly_chart(fig_cv, width='stretch')
 
         with tabs[1]:
             if behavioral:
@@ -288,7 +288,7 @@ def render_calibration_page(basin: dict) -> None:
                     fig_glue.update_layout(template="plotly_dark", height=380,
                                            title=f"GLUE Uncertainty Band ({len(behavioral)} behavioral sets)",
                                            yaxis_title="Q (m³/s)")
-                    st.plotly_chart(fig_glue, use_container_width=True)
+                    st.plotly_chart(fig_glue, width='stretch')
 
                 col_m1, col_m2 = st.columns(2)
                 col_m1.metric("Behavioral sets",  len(behavioral))
@@ -322,7 +322,7 @@ def render_calibration_page(basin: dict) -> None:
                 fig_dotty.update_layout(template="plotly_dark", height=500,
                                         title="Dotty Plots — Parameter Sensitivity",
                                         showlegend=False)
-                st.plotly_chart(fig_dotty, use_container_width=True)
+                st.plotly_chart(fig_dotty, width='stretch')
             else:
                 st.info("Need more behavioral sets for dotty plots.")
 
@@ -350,7 +350,7 @@ def render_calibration_page(basin: dict) -> None:
                 "BETA":  round(best_params.BETA, 2),
                 "Source": f"Monte Carlo n={n_mc}",
             }
-            st.dataframe(df_pub, use_container_width=True)
+            st.dataframe(df_pub, width='stretch')
         except Exception:
             pass
 

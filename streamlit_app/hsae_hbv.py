@@ -740,7 +740,7 @@ def render_hbv_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             title=f"HBV Natural Flow Baseline vs Declared Outflow — {basin_id}",
             xaxis_title="Date", yaxis_title="Discharge (BCM/day)",
         )
-        st.plotly_chart(fig_nf, use_container_width=True)
+        st.plotly_chart(fig_nf, width='stretch')
 
         # HIFD timeline
         fig_hifd = go.Figure(go.Bar(
@@ -758,7 +758,7 @@ def render_hbv_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             title="Human-Induced Flow Deficit (HIFD) %",
             yaxis_title="HIFD %"
         )
-        st.plotly_chart(fig_hifd, use_container_width=True)
+        st.plotly_chart(fig_hifd, width='stretch')
 
     # ── Tab 2: Catchment Components ───────────────────────────────────────────
     with tabs[1]:
@@ -789,7 +789,7 @@ def render_hbv_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             title=f"HBV Catchment State Variables — {basin_id}",
             showlegend=False
         )
-        st.plotly_chart(fig_comp, use_container_width=True)
+        st.plotly_chart(fig_comp, width='stretch')
 
         # Water balance summary
         st.markdown("#### Annual Water Balance")
@@ -804,7 +804,7 @@ def render_hbv_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
         fig_wb.add_trace(go.Bar(x=annual["Year"], y=annual["AET_tot"],  name="AET",      marker_color="#f59e0b"))
         fig_wb.update_layout(template="plotly_dark", height=320,
                              barmode="group", title="Annual Rainfall vs AET")
-        st.plotly_chart(fig_wb, use_container_width=True)
+        st.plotly_chart(fig_wb, width='stretch')
 
     # ── Tab 3: Uncertainty Bands ──────────────────────────────────────────────
     with tabs[2]:
@@ -842,7 +842,7 @@ def render_hbv_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
                 title="HBV Ensemble (200 runs) — Natural Flow Uncertainty",
                 yaxis_title="BCM/day"
             )
-            st.plotly_chart(fig_mc, use_container_width=True)
+            st.plotly_chart(fig_mc, width='stretch')
 
             # How often does observed fall below 5th percentile?
             if df_sim is not None and "Outflow_BCM" in df_sim.columns:
@@ -878,7 +878,7 @@ def render_hbv_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             title=f"Current HBV Parameter Values (normalised 0–1) — {basin_id}",
             yaxis=dict(title="Normalised value", range=[0, 1.2])
         )
-        st.plotly_chart(fig_par, use_container_width=True)
+        st.plotly_chart(fig_par, width='stretch')
 
         if run_calib:
             st.success(
@@ -898,7 +898,7 @@ def render_hbv_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             "Min":       [str(HBVParams.bounds()[k][0]) for k in param_names],
             "Max":       [str(HBVParams.bounds()[k][1]) for k in param_names],
         })
-        st.dataframe(df_par, hide_index=True, use_container_width=True)
+        st.dataframe(df_par, hide_index=True, width='stretch')
 
     # ── Tab 5: Legal Output ───────────────────────────────────────────────────
     with tabs[4]:
@@ -940,7 +940,7 @@ hydrological science and international water law:
             "Art5_days":  "{:.0f}",
             "Art7_days":  "{:.0f}",
         })
-        st.dataframe(styled, use_container_width=True)
+        st.dataframe(styled, width='stretch')
 
         # Flags display
         art7_yrs = legal_summary[legal_summary["Art7_days"] > 30]

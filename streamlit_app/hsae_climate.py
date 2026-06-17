@@ -291,7 +291,7 @@ def render_climate_page(df: pd.DataFrame | None, basin: dict) -> None:
             fig.add_hline(y=cap*0.5,line_dash="dot", line_color="#f59e0b",annotation_text="50% — Warning")
             fig.update_layout(template="plotly_dark",height=460,
                 title=f"Projected Storage — {basin_name} ({horizon})",yaxis_title="Volume (BCM)")
-            st.plotly_chart(fig,use_container_width=True)
+            st.plotly_chart(fig,width='stretch')
 
         # ── Temperature ───────────────────────────────────────────────────────
         with tab_temp:
@@ -304,7 +304,7 @@ def render_climate_page(df: pd.DataFrame | None, basin: dict) -> None:
             fig.update_layout(template="plotly_dark",height=380,
                 title=f"Temperature Anomaly (ΔT vs 1995-2014 baseline) — {continent}",
                 yaxis_title="ΔT (°C)",xaxis_title="Year")
-            st.plotly_chart(fig,use_container_width=True)
+            st.plotly_chart(fig,width='stretch')
             st.caption("Source: IPCC AR6 WGI Table SPM.1 — Regional projections")
 
         # ── Precipitation ─────────────────────────────────────────────────────
@@ -319,7 +319,7 @@ def render_climate_page(df: pd.DataFrame | None, basin: dict) -> None:
             fig.update_layout(template="plotly_dark",height=380,
                 title=f"Precipitation Change % — {continent} (CMIP6 ensemble median)",
                 yaxis_title="ΔP (%)",xaxis_title="Year")
-            st.plotly_chart(fig,use_container_width=True)
+            st.plotly_chart(fig,width='stretch')
 
         # ── Vulnerability ─────────────────────────────────────────────────────
         with tab_cvi:
@@ -335,14 +335,14 @@ def render_climate_page(df: pd.DataFrame | None, basin: dict) -> None:
                     "Min Fill %": v["min_fill_pct"],
                 })
             cvi_df = pd.DataFrame(cvi_rows)
-            st.dataframe(cvi_df, use_container_width=True, hide_index=True)
+            st.dataframe(cvi_df, width='stretch', hide_index=True)
 
             fig = px.bar(cvi_df, x="Scenario", y="CVI", color="CVI",
                 color_continuous_scale=["#22c55e","#f59e0b","#f97316","#ef4444"],
                 range_color=[0,100], template="plotly_dark", height=380,
                 title="Climate Vulnerability Index by Scenario")
             fig.update_layout(coloraxis_showscale=True, yaxis_range=[0,100])
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
 
         # ── Legal Impact ──────────────────────────────────────────────────────
         with tab_legal:

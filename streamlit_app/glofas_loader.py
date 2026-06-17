@@ -364,7 +364,7 @@ def render_glofas_page(basin: dict) -> None:
             fig.update_layout(template="plotly_dark", height=380,
                 title=f"GloFAS 30-Day Forecast — {basin.get('name','')}",
                 yaxis_title="Discharge (m³/s)")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
             # UN Art.28 alerts
             threshold = float(basin.get("cap",40))*1e6/86400*0.8
             alert_days = int((q_hi > threshold).sum())

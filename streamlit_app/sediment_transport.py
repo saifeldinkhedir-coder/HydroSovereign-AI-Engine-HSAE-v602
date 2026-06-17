@@ -434,7 +434,7 @@ def render_sediment_page(basin: Dict) -> None:
             yaxis_title="Storage remaining (%)",
             yaxis_range=[0, 105]
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
         # Notes
         st.subheader("📋 Assessment Notes")

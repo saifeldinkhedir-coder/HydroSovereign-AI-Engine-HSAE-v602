@@ -279,7 +279,7 @@ def intro_page():
     ]
 
     df_arts = pd.DataFrame(articles, columns=["Article","Principle","HSAE Metric","Module"])
-    st.dataframe(df_arts, use_container_width=True, hide_index=True)
+    st.dataframe(df_arts, width='stretch', hide_index=True)
 
     st.markdown("---")
 

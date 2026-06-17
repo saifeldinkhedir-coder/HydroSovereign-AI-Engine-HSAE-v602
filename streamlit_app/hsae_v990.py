@@ -216,7 +216,7 @@ body {background: #020617;}
             f"Context: {basin['context']}"
         )
 
-        if st.button("🚀 RUN INTEGRITY MISSION", type="primary", use_container_width=True):
+        if st.button("🚀 RUN INTEGRITY MISSION", type="primary", width='stretch'):
             data_mode_v990 = st.session_state.get("data_mode", "Simulation")
 
             if data_mode_v990 == "Direct GEE" and st.session_state.get("df") is not None:
@@ -373,7 +373,7 @@ body {background: #020617;}
                 font=dict(color='#E0E0E0'),
                 margin=dict(l=40, r=20, t=30, b=40),
             )
-            st.plotly_chart(_fig_tr, use_container_width=True)
+            st.plotly_chart(_fig_tr, width='stretch')
 
             st.markdown("#### ⚖️ Equity Index (Source-to-Sea Fairness)")
             _fig_eq = go.Figure()
@@ -397,7 +397,7 @@ body {background: #020617;}
                 font=dict(color='#E0E0E0'),
                 margin=dict(l=40, r=20, t=30, b=40),
             )
-            st.plotly_chart(_fig_eq, use_container_width=True)
+            st.plotly_chart(_fig_eq, width='stretch')
 
             st.markdown("#### 🏛️ Legal Reference Notes")
             st.markdown("""
@@ -444,7 +444,7 @@ body {background: #020617;}
                 yaxis_title="NDVI (Downstream)",
                 height=400
             )
-            st.plotly_chart(fig_nexus, use_container_width=True)
+            st.plotly_chart(fig_nexus, width='stretch')
 
         # -------- Tab 3: Source-to-Sea Impact --------
         with t3:
@@ -474,7 +474,7 @@ body {background: #020617;}
                     template="plotly_dark",
                     height=380
                 )
-                st.plotly_chart(fig_eco, use_container_width=True)
+                st.plotly_chart(fig_eco, width='stretch')
                 st.caption("تغير الغطاء النباتي في المصب كدالة لتغير التدفقات المائية والتشغيل.")
 
             with col_impact2:
@@ -491,7 +491,7 @@ body {background: #020617;}
                     template="plotly_dark",
                     height=380
                 )
-                st.plotly_chart(fig_socio, use_container_width=True)
+                st.plotly_chart(fig_socio, width='stretch')
                 st.caption("مؤشر تقريبي للنشاط الاقتصادي والتنموي اعتماداً على توفر الطاقة والتصرف.")
 
             st.markdown("#### ⚖️ Water Equity & River Connectivity Index")
@@ -549,7 +549,7 @@ body {background: #020617;}
                     xaxis_title="Date",
                     yaxis_title="Relative Volume"
                 )
-                st.plotly_chart(fig_comp, use_container_width=True)
+                st.plotly_chart(fig_comp, width='stretch')
 
                 st.markdown("#### Equity & Capacity Benchmarking")
                 b_col1, b_col2 = st.columns(2)
@@ -587,7 +587,7 @@ body {background: #020617;}
                         height=300,
                         title="Average Outflow as Power / Influence Proxy"
                     )
-                    st.plotly_chart(fig_p_comp, use_container_width=True)
+                    st.plotly_chart(fig_p_comp, width='stretch')
             else:
                 st.warning("Please select a different basin for comparison mode.")
 
@@ -625,7 +625,7 @@ body {background: #020617;}
                     title='MODIS ET vs Simple Evaporation',
                     yaxis_title='BCM/day'
                 )
-                st.plotly_chart(fig_et, use_container_width=True)
+                st.plotly_chart(fig_et, width='stretch')
 
                 col_et1, col_et2 = st.columns(2)
                 with col_et1:
@@ -650,7 +650,7 @@ body {background: #020617;}
                         title='Standard vs ET-Corrected TDI',
                         yaxis_title='TDI %'
                     )
-                    st.plotly_chart(fig_tdi, use_container_width=True)
+                    st.plotly_chart(fig_tdi, width='stretch')
 
                 with col_et2:
                     st.markdown("#### ET₀ Seasonal Cycle")
@@ -669,7 +669,7 @@ body {background: #020617;}
                         title='Mean Monthly ET₀ (mm/day)',
                         yaxis_title='mm/day'
                     )
-                    st.plotly_chart(fig_et0, use_container_width=True)
+                    st.plotly_chart(fig_et0, width='stretch')
 
                 st.latex(r"TDI = max(0,\; (I_{adj} - Q_{out}) / (I_{adj} + 0.1))")
                 st.caption("Correcting for natural ET reduces false positives in forensic analysis.")
@@ -709,7 +709,7 @@ body {background: #020617;}
                         title='Suspended Sediment Concentration',
                         yaxis_title='mg/L'
                     )
-                    st.plotly_chart(fig_sed, use_container_width=True)
+                    st.plotly_chart(fig_sed, width='stretch')
 
                 with col_s2:
                     st.markdown("#### Water Quality Indicators (Proxy)")
@@ -737,7 +737,7 @@ body {background: #020617;}
                         fig_wq.update_layout(template='plotly_dark', height=200,
                             title='Electrical Conductivity (Salinity Proxy)',
                             yaxis_title='μS/cm')
-                        st.plotly_chart(fig_wq, use_container_width=True)
+                        st.plotly_chart(fig_wq, width='stretch')
 
                         fig_do = _go990.Figure()
                         fig_do.add_trace(_go990.Scatter(
@@ -750,7 +750,7 @@ body {background: #020617;}
                         fig_do.update_layout(template='plotly_dark', height=200,
                             title='Dissolved Oxygen (Ecological Health)',
                             yaxis_title='mg/L')
-                        st.plotly_chart(fig_do, use_container_width=True)
+                        st.plotly_chart(fig_do, width='stretch')
                     except Exception as _e_wq:
                         st.warning(f"Water Quality chart: {_e_wq}")
 

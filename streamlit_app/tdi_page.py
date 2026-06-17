@@ -80,7 +80,7 @@ $$F_{\text{score}} = \overline{\text{TDI}} \cdot \bigl(1 + \dot{\text{TDI}}\bigr
                     "No significant harm threshold",
                     "Data withholding threshold",
                 ],
-            }), use_container_width=True, hide_index=True)
+            }), width='stretch', hide_index=True)
 
     st.markdown("---")
 
@@ -138,7 +138,7 @@ All flow columns in **BCM/day** (Billion Cubic Meters per day).""")
                 if "Inflow_BCM" in df_up.columns and "Outflow_BCM" in df_up.columns:
                     df_input = df_up
                     st.success(f"✅ Loaded {len(df_up)} rows")
-                    st.dataframe(df_up.head(5), use_container_width=True)
+                    st.dataframe(df_up.head(5), width='stretch')
                 else:
                     st.error("Missing required columns: Inflow_BCM, Outflow_BCM")
             except Exception as e:
@@ -165,7 +165,7 @@ All flow columns in **BCM/day** (Billion Cubic Meters per day).""")
     # ── Compute ───────────────────────────────────────────────────────────
     st.markdown("---")
     if st.button("🔢 Compute TDI · ATDI · AFSF", type="primary",
-                 use_container_width=True):
+                 width='stretch'):
 
         df_result = add_tdi_to_df(
             df_input,
@@ -266,7 +266,7 @@ All flow columns in **BCM/day** (Billion Cubic Meters per day).""")
             height=420,
             plot_bgcolor="#F8FAFC",
         )
-        st.plotly_chart(fig1, use_container_width=True)
+        st.plotly_chart(fig1, width='stretch')
 
         # ── Chart 2: Inflow vs Outflow ─────────────────────────────────
         fig2 = go.Figure()
@@ -288,7 +288,7 @@ All flow columns in **BCM/day** (Billion Cubic Meters per day).""")
             height=300, plot_bgcolor="#F8FAFC",
             legend=dict(orientation="h", y=1.05),
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, width='stretch')
 
         # ── Monthly ATDI Bar ───────────────────────────────────────────
         try:
@@ -329,7 +329,7 @@ All flow columns in **BCM/day** (Billion Cubic Meters per day).""")
             yaxis=dict(range=[0, max(100, max(_mean_vals)*1.15) if _mean_vals else 100]),
             height=320, plot_bgcolor="#F8FAFC",
         )
-        st.plotly_chart(fig3, use_container_width=True)
+        st.plotly_chart(fig3, width='stretch')
 
         # ── Download ───────────────────────────────────────────────────
         st.markdown("---")
@@ -349,7 +349,7 @@ All flow columns in **BCM/day** (Billion Cubic Meters per day).""")
             csv_bytes,
             f"HSAE_TDI_{basin.get('id','basin')}_eps{eps}_alpha{alpha}.csv",
             "text/csv",
-            use_container_width=True,
+            width='stretch',
         )
 
         st.caption(

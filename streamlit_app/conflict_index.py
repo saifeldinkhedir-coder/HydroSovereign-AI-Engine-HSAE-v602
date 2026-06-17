@@ -533,7 +533,7 @@ def render_conflict_page(basin: dict) -> None:
                "font": {"color": "#E0E0E0", "size": 13}}))
     fig.update_layout(template="plotly_dark", height=320,
                       paper_bgcolor="#0F1117", font=dict(color="#E0E0E0"))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     # ── Context ───────────────────────────────────────────────────────────
     if context:

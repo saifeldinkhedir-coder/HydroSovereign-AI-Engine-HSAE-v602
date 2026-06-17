@@ -454,7 +454,7 @@ def render_groundwater_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             title=f"Demand–Supply Balance — {basin_id}",
             yaxis_title="MCM/day"
         )
-        st.plotly_chart(fig_ds, use_container_width=True)
+        st.plotly_chart(fig_ds, width='stretch')
 
         # Annual summary
         df_gw["Year"] = pd.to_datetime(df_gw["Date"]).dt.year
@@ -469,7 +469,7 @@ def render_groundwater_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
         fig_ann.add_trace(go.Bar(x=annual["Year"], y=annual["Deficit_BCM"], name="Deficit", marker_color="#ef4444"))
         fig_ann.update_layout(template="plotly_dark",height=320,barmode="group",
                                title="Annual Water Balance",yaxis_title="BCM/year")
-        st.plotly_chart(fig_ann, use_container_width=True)
+        st.plotly_chart(fig_ann, width='stretch')
 
     # ── Tab 2: Irrigation ────────────────────────────────────────────────────
     with tabs[1]:
@@ -485,7 +485,7 @@ def render_groundwater_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             name="Irr. Demand",line=dict(color="#3b82f6"),
             fill="tozeroy",fillcolor="rgba(59,130,246,0.12)"), row=2,col=1)
         fig_irr.update_layout(template="plotly_dark",height=500)
-        st.plotly_chart(fig_irr, use_container_width=True)
+        st.plotly_chart(fig_irr, width='stretch')
 
         # Crop Kc reference
         st.markdown("#### 🌾 Crop Coefficients Reference")
@@ -494,7 +494,7 @@ def render_groundwater_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
              "Kc_late":v["late"],"Season_days":v["season_days"]}
             for c,v in CROP_KC.items()
         ])
-        st.dataframe(kc_data, use_container_width=True, hide_index=True)
+        st.dataframe(kc_data, width='stretch', hide_index=True)
         st.caption("Source: FAO Irrigation and Drainage Paper No. 56 (Allen et al., 1998)")
 
     # ── Tab 3: Groundwater ────────────────────────────────────────────────────
@@ -518,7 +518,7 @@ def render_groundwater_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             fill="tozeroy",fillcolor="rgba(249,115,22,0.12)"), row=3,col=1)
         fig_gw.update_layout(template="plotly_dark",height=600,
                               title=f"Groundwater Dynamics — {basin_id}")
-        st.plotly_chart(fig_gw, use_container_width=True)
+        st.plotly_chart(fig_gw, width='stretch')
 
         depl_total = float(df_gw["GW_depletion_mm"].iloc[-1])
         gw_contrib = float(df_gw["Q_gw_BCM"].sum())
@@ -553,7 +553,7 @@ def render_groundwater_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             title=f"Muskingum Flood Routing — K={musk_K}d, X={musk_X}",
             yaxis_title="Inflow (BCM/day)"
         )
-        st.plotly_chart(fig_rout, use_container_width=True)
+        st.plotly_chart(fig_rout, width='stretch')
 
         peak_raw   = float(df_sim["Inflow_BCM"].max())
         peak_rout  = float(df_gw["Routed_Inflow_BCM"].max())

@@ -465,7 +465,7 @@ def render_sensitivity_page(basin: dict) -> None:
                         marker_color=["#3b82f6" if v == max(values) else "#64748b" for v in values]))
                     fig.update_layout(template="plotly_dark", height=350,
                         title=f"OAT Sensitivity — {index}", yaxis_title="|ΔIndex|")
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, width='stretch')
                     st.info(f"Most sensitive parameter: **{params[values.index(max(values))]}**")
                 else:
                     st.info("Sensitivity results computed. Check parameters above.")

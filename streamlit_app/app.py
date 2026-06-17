@@ -1320,7 +1320,7 @@ elif page == "🌌 GRACE-FO · Water Storage":
             paper_bgcolor="#0F1117", plot_bgcolor="#0F1117",
             font=dict(color="#E0E0E0"),
         )
-        st.plotly_chart(fig_tws, use_container_width=True)
+        st.plotly_chart(fig_tws, width='stretch')
 
         # ── Metrics ───────────────────────────────────────────────────────
         col1, col2, col3, col4 = st.columns(4)

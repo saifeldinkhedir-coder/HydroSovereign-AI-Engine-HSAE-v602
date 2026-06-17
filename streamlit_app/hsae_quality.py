@@ -472,7 +472,7 @@ def render_quality_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             title=f"Water Quality Index — {basin_id}",
             yaxis=dict(title="WQI (0–100)", range=[0,100])
         )
-        st.plotly_chart(fig_wqi, use_container_width=True)
+        st.plotly_chart(fig_wqi, width='stretch')
 
         # Radar chart for latest 30-day mean
         recent = df_wq.tail(30)
@@ -500,7 +500,7 @@ def render_quality_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             template="plotly_dark", height=380,
             title="Quality Radar — Last 30 Days (higher = better)"
         )
-        st.plotly_chart(fig_radar, use_container_width=True)
+        st.plotly_chart(fig_radar, width='stretch')
 
     # ── Tab 2: DO & BOD ──────────────────────────────────────────────────────
     with tabs[1]:
@@ -527,7 +527,7 @@ def render_quality_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
         fig_do.add_hline(y=10, row=2,col=1, line_dash="dash", line_color="#dc2626",
                          annotation_text="Critical 10 mg/L")
         fig_do.update_layout(template="plotly_dark", height=520)
-        st.plotly_chart(fig_do, use_container_width=True)
+        st.plotly_chart(fig_do, width='stretch')
 
         # Scatter: DO vs Flow (dilution effect)
         _samp_do = df_wq.sample(min(500, len(df_wq)))
@@ -548,7 +548,7 @@ def render_quality_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             title="DO vs Flow — Dilution Effect",
             xaxis_title="Flow (BCM/d)", yaxis_title="DO (mg/L)"
         )
-        st.plotly_chart(fig_dof, use_container_width=True)
+        st.plotly_chart(fig_dof, width='stretch')
 
     # ── Tab 3: Salinity ──────────────────────────────────────────────────────
     with tabs[2]:
@@ -571,7 +571,7 @@ def render_quality_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
         fig_ec.add_hline(y=1000, row=2,col=1, line_dash="dot", line_color="#f59e0b",
                          annotation_text="WHO limit 1000 mg/L")
         fig_ec.update_layout(template="plotly_dark", height=520)
-        st.plotly_chart(fig_ec, use_container_width=True)
+        st.plotly_chart(fig_ec, width='stretch')
 
         # EC vs Flow inverse relationship
         _df_ecf = df_wq[["Flow_BCM","EC_uS_cm"]].replace([np.inf,-np.inf], np.nan).dropna()
@@ -588,7 +588,7 @@ def render_quality_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             title="EC vs Flow — Concentration-Dilution Relationship",
             xaxis_title="Flow (BCM/d)", yaxis_title="EC (µS/cm)"
         )
-        st.plotly_chart(fig_ecf, use_container_width=True)
+        st.plotly_chart(fig_ecf, width='stretch')
         st.caption("EC rises when flow drops — classic concentration effect due to "
                    "evaporation and reduced dilution of naturally occurring salts.")
 
@@ -615,7 +615,7 @@ def render_quality_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
                          annotation_text="Concern (6.0)")
         fig_tp.add_hline(y=9.0, row=2,col=1, line_dash="dash",line_color="#f59e0b")
         fig_tp.update_layout(template="plotly_dark", height=520)
-        st.plotly_chart(fig_tp, use_container_width=True)
+        st.plotly_chart(fig_tp, width='stretch')
 
         # Seasonal means
         df_wq["Month"] = pd.to_datetime(df_wq["Date"]).dt.month
@@ -633,7 +633,7 @@ def render_quality_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             title="Seasonal Temperature & pH",
             yaxis2=dict(overlaying="y",side="right",title="pH ×3",showgrid=False)
         )
-        st.plotly_chart(fig_seas, use_container_width=True)
+        st.plotly_chart(fig_seas, width='stretch')
 
     # ── Tab 5: Nitrates & Metals ─────────────────────────────────────────────
     with tabs[4]:
@@ -658,7 +658,7 @@ def render_quality_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
         fig_nm.add_hline(y=1.0,  row=2,col=1, line_dash="dash",line_color="#dc2626",
                          annotation_text="Remediation trigger (1.0)")
         fig_nm.update_layout(template="plotly_dark", height=520)
-        st.plotly_chart(fig_nm, use_container_width=True)
+        st.plotly_chart(fig_nm, width='stretch')
 
     # ── Tab 6: Compliance Table ──────────────────────────────────────────────
     with tabs[5]:
@@ -670,7 +670,7 @@ def render_quality_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
             return "background-color:#071a12;color:#6ee7b7"
 
         styled_comp = compliance.style.map(_style_status, subset=["Status"])
-        st.dataframe(styled_comp, use_container_width=True, hide_index=True)
+        st.dataframe(styled_comp, width='stretch', hide_index=True)
 
         # Monthly aggregates
         st.markdown("#### Monthly Mean Quality Parameters")
@@ -682,7 +682,7 @@ def render_quality_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
         }).round(2).reset_index()
         monthly["Month"] = ["Jan","Feb","Mar","Apr","May","Jun",
                              "Jul","Aug","Sep","Oct","Nov","Dec"]
-        st.dataframe(monthly, use_container_width=True, hide_index=True)
+        st.dataframe(monthly, width='stretch', hide_index=True)
 
     # ── Tab 7: Legal Art. 20/21 ──────────────────────────────────────────────
     with tabs[6]:

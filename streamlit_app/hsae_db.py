@@ -242,7 +242,7 @@ def render_db_page() -> None:
         else:
             st.metric("Total runs", len(df_h))
             st.dataframe(df_h[["timestamp","basin","module","data_mode","n_rows","sha256"]],
-                         use_container_width=True, height=400)
+                         width='stretch', height=400)
             st.download_button("⬇️ Export Run History",
                 df_h.to_csv(index=False).encode(),"hsae_run_history.csv","text/csv")
 
@@ -256,7 +256,7 @@ def render_db_page() -> None:
         else:
             df_c = pd.DataFrame([dict(r) for r in rows])
             st.metric("Cached datasets", len(df_c))
-            st.dataframe(df_c, use_container_width=True, height=300)
+            st.dataframe(df_c, width='stretch', height=300)
             if st.button("🗑️ Clear All Cache", key="db_clear_cache"):
                 conn = get_conn(); conn.execute("DELETE FROM basin_cache"); conn.commit(); conn.close()
                 st.success("Cache cleared."); st.rerun()
@@ -268,7 +268,7 @@ def render_db_page() -> None:
             st.info("No audit events yet.")
         else:
             st.metric("Total events", len(df_a))
-            st.dataframe(df_a, use_container_width=True, height=400)
+            st.dataframe(df_a, width='stretch', height=400)
             st.download_button("⬇️ Export Audit Log",
                 df_a.to_csv(index=False).encode(),"hsae_audit_persistent.csv","text/csv")
 
@@ -282,7 +282,7 @@ def render_db_page() -> None:
             c1,c2 = st.columns(2)
             c1.metric("Total anomalies", len(df_an))
             c2.metric("Legal flags", int(n_lf))
-            st.dataframe(df_an, use_container_width=True, height=400)
+            st.dataframe(df_an, width='stretch', height=400)
             st.download_button("⬇️ Export for Legal Dossier",
                 df_an.to_csv(index=False).encode(),"hsae_anomalies_legal.csv","text/csv")
 

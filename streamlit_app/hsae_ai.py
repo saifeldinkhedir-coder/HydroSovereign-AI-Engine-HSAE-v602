@@ -180,7 +180,7 @@ def render_ai_page(df: pd.DataFrame | None, basin: dict) -> None:
                 fig.add_trace(go.Scatter(x=dte,y=res["y_te_rf"],mode="lines",name="RF",line=dict(color="#3b82f6",width=1,dash="dot"),opacity=0.6))
                 fig.add_trace(go.Scatter(x=dte,y=res["y_te_mlp"],mode="lines",name="MLP",line=dict(color="#f59e0b",width=1,dash="dash"),opacity=0.6))
                 fig.update_layout(template="plotly_dark",height=420,title=f"Test Set — {res['target']}",yaxis_title=res["target"])
-                st.plotly_chart(fig,use_container_width=True)
+                st.plotly_chart(fig,width='stretch')
 
     # ── Forecast ──────────────────────────────────────────────────────────────
     with tab_fore:
@@ -206,7 +206,7 @@ def render_ai_page(df: pd.DataFrame | None, basin: dict) -> None:
                 fill="toself",fillcolor="rgba(245,158,11,0.15)",line=dict(color="rgba(0,0,0,0)"),name="±10%"))
             fig.add_vline(x=str(pd.to_datetime(dh[-1]))[:10],line_dash="dash",line_color="#ef4444")
             fig.update_layout(template="plotly_dark",height=440,title=f"{hor}-day {ftgt} Forecast",yaxis_title=ftgt)
-            st.plotly_chart(fig,use_container_width=True)
+            st.plotly_chart(fig,width='stretch')
 
     # ── Anomalies ─────────────────────────────────────────────────────────────
     with tab_anom:
@@ -229,10 +229,10 @@ def render_ai_page(df: pd.DataFrame | None, basin: dict) -> None:
             fig.add_trace(go.Scatter(x=nm["Date"],y=nm["Volume_BCM"],mode="lines",name="Normal",line=dict(color="#22c55e",width=1.5)))
             fig.add_trace(go.Scatter(x=ab["Date"],y=ab["Volume_BCM"],mode="markers",name="⚠️ Anomaly",marker=dict(color="#ef4444",size=8,symbol="x")))
             fig.update_layout(template="plotly_dark",height=400,title="Volume — Anomaly Flags",yaxis_title="BCM")
-            st.plotly_chart(fig,use_container_width=True)
+            st.plotly_chart(fig,width='stretch')
             at = da[da["is_anomaly"]][["Date","Volume_BCM","Delta_V","Inflow_BCM","Outflow_BCM","anomaly_score"]].copy()
             at["Date"] = at["Date"].dt.strftime("%Y-%m-%d")
-            st.dataframe(at.head(50),use_container_width=True,height=280)
+            st.dataframe(at.head(50),width='stretch',height=280)
             st.download_button("⬇️ Export Evidence CSV",at.to_csv(index=False).encode(),"HSAE_anomalies.csv","text/csv")
             if na>0: st.error(f"⚠️ Legal Flag: {na} anomalous days — possible UN 1997 Art.9 violation")
 
@@ -249,4 +249,4 @@ def render_ai_page(df: pd.DataFrame | None, basin: dict) -> None:
                          template="plotly_dark",height=480,
                          title=f"RF Feature Importance — {res['target']}")
             fig.update_layout(yaxis=dict(autorange="reversed"),coloraxis_showscale=False)
-            st.plotly_chart(fig,use_container_width=True)
+            st.plotly_chart(fig,width='stretch')

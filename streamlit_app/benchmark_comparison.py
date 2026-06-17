@@ -1185,7 +1185,7 @@ def render_benchmark_page(basin: dict) -> None:
         {"Tool":"SWAT+",      "NSE":0.73,"KGE":0.76,"PBIAS":11.8,"Legal":"❌","GIS":"✅","AI":"❌"},
     ]
     df = pd.DataFrame(data)
-    st.dataframe(df, use_container_width=True)
+    st.dataframe(df, width='stretch')
     col1,col2,col3 = st.columns(3)
     col1.metric("HSAE NSE", "0.78 ✅", delta="Best in class")
     col2.metric("Legal Mapping", "UNWC 33 Articles", delta="Unique")

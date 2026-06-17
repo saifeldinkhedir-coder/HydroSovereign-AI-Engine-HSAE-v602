@@ -240,14 +240,14 @@ def render_upload_real_data():
         st.download_button(
             "⬇️ Download daily results CSV",
             csv, f"hsae_{basin_name or 'results'}.csv",
-            "text/csv", use_container_width=True
+            "text/csv", width='stretch'
         )
     with col2:
         summary_csv = pd.DataFrame([summary]).to_csv(index=False)
         st.download_button(
             "⬇️ Download summary CSV",
             summary_csv, f"hsae_{basin_name or 'summary'}_summary.csv",
-            "text/csv", use_container_width=True
+            "text/csv", width='stretch'
         )
 
 

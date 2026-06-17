@@ -288,8 +288,8 @@ def page_v430():
         st.session_state["lag_days"] = lag_days
 
         c1b, c2b = st.columns(2)
-        run_btn = c1b.button("🚀 RUN ENGINE", type="primary", use_container_width=True)
-        if c2b.button("🔄 RESET", use_container_width=True):
+        run_btn = c1b.button("🚀 RUN ENGINE", type="primary", width='stretch')
+        if c2b.button("🔄 RESET", width='stretch'):
             for k in ["executed","df","basin_v430","closure_error",
                       "td_index","forensic_score","cloudy_ratio"]:
                 st.session_state[k] = None if k == "df" else (False if k=="executed" else 0.0)
@@ -347,7 +347,7 @@ def page_v430():
                                       mapbox_style="carto-darkmatter",
                                       color_discrete_sequence=["#10b981"])
             _fig.update_layout(margin=dict(l=0,r=0,t=0,b=0),showlegend=False)
-            st.plotly_chart(_fig,use_container_width=True)
+            st.plotly_chart(_fig,width='stretch')
     with c_spec:
         st.latex(rf"V = {basin['bathy_a']:.3f} \times A^{{{basin['bathy_b']:.2f}}}")
         st.caption(
@@ -402,7 +402,7 @@ def page_v430():
                     f"{df_preview['Date'].dt.date.min()} → "
                     f"{df_preview['Date'].dt.date.max()}"
                 )
-                st.dataframe(df_preview.head(5), use_container_width=True)
+                st.dataframe(df_preview.head(5), width='stretch')
             except Exception as e:
                 st.error(f"❌ CSV parse error: {e}")
         elif st.session_state.get("csv_df_v430") is not None:
@@ -485,7 +485,7 @@ def page_v430():
                             f"{icon} {lbl}</div>",
                             unsafe_allow_html=True,
                         )
-                    st.dataframe(gee_df.head(5), use_container_width=True)
+                    st.dataframe(gee_df.head(5), width='stretch')
                 except Exception as e:
                     st.error(f"❌ GEE CSV parse error: {e}")
         with col_gee2:
@@ -504,7 +504,7 @@ def page_v430():
                 "</div>",
                 unsafe_allow_html=True,
             )
-            if st.button("🔗 Open GEE Code Editor", use_container_width=True):
+            if st.button("🔗 Open GEE Code Editor", width='stretch'):
                 st.markdown(
                     "[Open GEE](https://code.earthengine.google.com)",
                     unsafe_allow_html=True,
@@ -698,7 +698,7 @@ def page_v430():
         fig_mb.update_layout(template="plotly_dark", height=520,
                              title=f"Mass Balance — {basin_name}",
                              barmode="overlay")
-        st.plotly_chart(fig_mb, use_container_width=True)
+        st.plotly_chart(fig_mb, width='stretch')
 
         # Losses breakdown
         col_l1, col_l2, col_l3 = st.columns(3)
@@ -722,7 +722,7 @@ def page_v430():
         fig_sf.update_layout(template="plotly_dark", height=420,
                              title=f"SAR + Optical Fusion — {basin_name}",
                              yaxis_title="Surface Area (km²)")
-        st.plotly_chart(fig_sf, use_container_width=True)
+        st.plotly_chart(fig_sf, width='stretch')
         st.caption(
             f"Cloud/gap days (SAR-only fallback): **{cloudy_ratio:.1f}%**  |  "
             f"S1 weight: {s1_weight:.0%}  ·  S2 weight: {1-s1_weight:.0%}"
@@ -775,7 +775,7 @@ def page_v430():
         fig_ai.update_layout(template="plotly_dark", height=480,
                              title=f"90-Day Storage Forecast — {basin_name}",
                              yaxis_title="Storage (BCM)")
-        st.plotly_chart(fig_ai, use_container_width=True)
+        st.plotly_chart(fig_ai, width='stretch')
 
     # ── Tab 5: Lag Analysis ───────────────────────────────────────────────
     with tab_lag:
@@ -794,7 +794,7 @@ def page_v430():
                              title=f"Lag={_lag} days — {basin_name}")
         fig_lag.update_yaxes(title_text="BCM/day", secondary_y=False)
         fig_lag.update_yaxes(title_text="Lag ×", secondary_y=True)
-        st.plotly_chart(fig_lag, use_container_width=True)
+        st.plotly_chart(fig_lag, width='stretch')
         st.metric("Average Lag Multiplier", f"{df['Lag_Effect'].mean():.2f}×")
 
     # ── Tab 6: Cloud Masking ──────────────────────────────────────────────
@@ -819,7 +819,7 @@ def mask_s2_clouds(image):
         fig_cld.update_layout(template="plotly_dark", height=280,
                              barmode="stack", title="Data Availability Timeline",
                              yaxis=dict(tickvals=[0,1], ticktext=["No","Yes"]))
-        st.plotly_chart(fig_cld, use_container_width=True)
+        st.plotly_chart(fig_cld, width='stretch')
 
     # ── Tab 7: Ground Truth ───────────────────────────────────────────────
     with tab_gt:
@@ -918,7 +918,7 @@ def mask_s2_clouds(image):
                             y=sim, name="HSAE", line=dict(color="#10b981",width=2,dash="dot")))
                         fig_cmp.update_layout(template="plotly_dark", height=300,
                             title=f"{lbl}: Station vs HSAE Model — {basin_name}")
-                        st.plotly_chart(fig_cmp, use_container_width=True)
+                        st.plotly_chart(fig_cmp, width='stretch')
 
     # ── Tab 8: GPM Forecast ───────────────────────────────────────────────
     with tab_gpm:
@@ -953,7 +953,7 @@ def mask_s2_clouds(image):
             fig_gpm.update_layout(template="plotly_dark", height=400,
                                   title=f"GPM Inflow Forecast (lead={lead}d) — {basin_name}",
                                   yaxis_title="Inflow (BCM/day)")
-            st.plotly_chart(fig_gpm, use_container_width=True)
+            st.plotly_chart(fig_gpm, width='stretch')
 
     # ── Tab 9: Hydro-Forensics ────────────────────────────────────────────
     with tab_frn:
@@ -976,7 +976,7 @@ def mask_s2_clouds(image):
                                      name="TD Deficit", line=dict(color="#ef4444")))
         fig_frn.update_layout(template="plotly_dark", height=460,
                              title=f"Transparency Deficit Index — {basin_name}")
-        st.plotly_chart(fig_frn, use_container_width=True)
+        st.plotly_chart(fig_frn, width='stretch')
 
         fc1, fc2 = st.columns(2)
         fc1.metric("TDI (mean)",           f"{td_index:.1f}%")
@@ -1040,7 +1040,7 @@ def mask_s2_clouds(image):
             )
             fig_sc.add_hline(y=avg_t, line_dash="dash", line_color="#fbbf24",
                              annotation_text=f"Global avg {avg_t:.1f}%")
-            st.plotly_chart(fig_sc, use_container_width=True)
+            st.plotly_chart(fig_sc, width='stretch')
 
             # Ranking bar
             df_s = df_bm.sort_values("TDI (%)")
@@ -1059,7 +1059,7 @@ def mask_s2_clouds(image):
                 xaxis_title="TD Index %  (lower = more transparent)",
                 margin=dict(l=230),
             )
-            st.plotly_chart(fig_bar, use_container_width=True)
+            st.plotly_chart(fig_bar, width='stretch')
 
             with st.expander("📋 Full benchmark table"):
                 num_cols = ["Cap (BCM)","Head (m)","TDI (%)","Transp. (%)","Power (MW)","Fill (%)"]
@@ -1072,5 +1072,5 @@ def mask_s2_clouds(image):
                          .highlight_max(subset=["Transp. (%)"], color="#064e3b")
                          .highlight_min(subset=["TDI (%)"],     color="#1e3a5f")
                          .format({c: "{:.1f}" for c in num_cols}),
-                    use_container_width=True,
+                    width='stretch',
                 )

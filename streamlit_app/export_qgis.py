@@ -117,7 +117,7 @@ def render_export_qgis_section(df, basin, basins_dict):
         with c1a:
             st.download_button("⬇️ Download UNWC_Compliance.geojson",
                 data=legal_str, file_name="HSAE_UNWC_Compliance.geojson",
-                mime="application/geo+json", key="dl_legal", use_container_width=True)
+                mime="application/geo+json", key="dl_legal", width='stretch')
         with c1b:
             statuses = [f["properties"]["legal_status"] for f in _fc1["features"]]
             from collections import Counter
@@ -138,7 +138,7 @@ def render_export_qgis_section(df, basin, basins_dict):
         _fc2 = json.loads(bbox_str)
         st.download_button("⬇️ Download BasinBoundaries.geojson",
             data=bbox_str, file_name="HSAE_BasinBoundaries.geojson",
-            mime="application/geo+json", key="dl_bbox", use_container_width=True)
+            mime="application/geo+json", key="dl_bbox", width='stretch')
         st.success(f"✅ {len(_fc2['features'])} basin polygons · ATDI + treaty + country attributes")
     except Exception as e:
         st.error(f"{e}")
@@ -153,7 +153,7 @@ def render_export_qgis_section(df, basin, basins_dict):
         _fc3 = json.loads(pts_str)
         st.download_button("⬇️ Download BasinCentroids.geojson",
             data=pts_str, file_name="HSAE_BasinCentroids.geojson",
-            mime="application/geo+json", key="dl_pts", use_container_width=True)
+            mime="application/geo+json", key="dl_pts", width='stretch')
         st.success(f"✅ {len(_fc3['features'])} points")
     except Exception as e:
         st.error(f"{e}")
@@ -170,7 +170,7 @@ def render_export_qgis_section(df, basin, basins_dict):
             st.download_button("⬇️ Download Monthly_TimeSeries.geojson",
                 data=monthly_str,
                 file_name=f"HSAE_{basin.get('id','basin')}_Monthly.geojson",
-                mime="application/geo+json", key="dl_monthly", use_container_width=True)
+                mime="application/geo+json", key="dl_monthly", width='stretch')
             st.success(f"✅ {len(_fc4['features'])} months · Volume + Inflow + NDWI + TDI per month")
             st.info("💡 In QGIS: Layer Properties → Temporal → Field: date → animate with Temporal Controller")
         except Exception as e:
@@ -189,7 +189,7 @@ def render_export_qgis_section(df, basin, basins_dict):
             st.download_button("⬇️ Download TimeSeries.csv",
                 data=csv_str,
                 file_name=f"HSAE_{basin.get('id','basin')}_daily.csv",
-                mime="text/csv", key="dl_csv", use_container_width=True)
+                mime="text/csv", key="dl_csv", width='stretch')
             st.success(f"✅ {len(df):,} daily rows · {len(df.columns)} variables")
         except Exception as e:
             st.error(f"{e}")

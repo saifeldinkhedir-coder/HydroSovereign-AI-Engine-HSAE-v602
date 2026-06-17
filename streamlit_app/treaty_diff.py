@@ -1135,7 +1135,7 @@ def render_treaty_diff_page(basin: dict) -> None:
             import pandas as pd
             df = pd.DataFrame(scores[:10])
             st.subheader("Treaty Compliance Scores")
-            st.dataframe(df, use_container_width=True)
+            st.dataframe(df, width='stretch')
     except Exception as e:
         st.warning(f"Treaty analysis: {e}")
         st.markdown("**UNWC 1997 Key Articles:**")

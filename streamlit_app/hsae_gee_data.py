@@ -1343,7 +1343,7 @@ def render_real_data_panel(basin_name: str, basin: dict) -> pd.DataFrame | None:
                     title="Open-Meteo ERA5 — Precipitation & ET₀",
                     yaxis=dict(title="Rain (mm)"),
                     yaxis2=dict(title="ET₀ (mm/d)", overlaying="y", side="right"))
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
 
             if results.get("q") is not None:
                 dq = results["q"]
@@ -1352,7 +1352,7 @@ def render_real_data_panel(basin_name: str, basin: dict) -> pd.DataFrame | None:
                     name=f"Discharge m³/s ({src})", line=dict(color="#22c55e", width=1.5)))
                 fig2.update_layout(template="plotly_dark", height=300,
                     title=f"River Discharge — {src}", yaxis_title="m³/s")
-                st.plotly_chart(fig2, use_container_width=True)
+                st.plotly_chart(fig2, width='stretch')
 
     # ── TAB 3: MERGED DATASET ─────────────────────────────────────────────────
     with tab_merge:
@@ -1409,7 +1409,7 @@ def render_real_data_panel(basin_name: str, basin: dict) -> pd.DataFrame | None:
                         for o in info["overrides"]: st.markdown(f"  - {o}")
 
                 # Preview
-                st.dataframe(merged_df.tail(30), use_container_width=True, height=300)
+                st.dataframe(merged_df.tail(30), width='stretch', height=300)
                 st.download_button("⬇️ Download Master Dataset",
                     merged_df.to_csv(index=False).encode(),
                     f"HSAE_master_{basin_name.replace(' ','_')}.csv","text/csv")

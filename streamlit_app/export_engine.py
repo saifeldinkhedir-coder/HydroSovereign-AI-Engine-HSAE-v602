@@ -456,7 +456,7 @@ def render_export_panel(
                 data=export_csv(df),
                 file_name=f"HSAE_{basin_id}_{ts}.csv",
                 mime="text/csv",
-                use_container_width=True,
+                width='stretch',
             )
 
     # Excel — needs openpyxl
@@ -469,7 +469,7 @@ def render_export_panel(
                     data=xlsx_bytes,
                     file_name=f"HSAE_{basin_id}_{ts}.xlsx",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    use_container_width=True,
+                    width='stretch',
                 )
             except Exception as e:
                 st.caption(f"Excel: {e}")
@@ -486,7 +486,7 @@ def render_export_panel(
                     data=nc_bytes,
                     file_name=f"HSAE_{basin_id}_{ts}.nc",
                     mime="application/octet-stream",
-                    use_container_width=True,
+                    width='stretch',
                 )
             except Exception as e:
                 st.caption(f"NetCDF: {e}")
@@ -503,7 +503,7 @@ def render_export_panel(
                 data=gj_bytes,
                 file_name=f"HSAE_basins_{ts}.geojson",
                 mime="application/geo+json",
-                use_container_width=True,
+                width='stretch',
             )
         except Exception as e:
             st.caption(f"GeoJSON: {e}")

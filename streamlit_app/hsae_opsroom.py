@@ -504,7 +504,7 @@ def render_opsroom_page(df_sim: pd.DataFrame | None, basin: dict) -> None:
         for c in num_cols:
             if c in show.columns:
                 show[c] = show[c].apply(lambda x: f"{float(x):.1f}" if x is not None else "")
-        st.dataframe(show, use_container_width=True, height=420)
+        st.dataframe(show, width='stretch', height=420)
 
         # GPM 30-min pulse
         st.markdown("#### ☔ GPM 30-Minute Pulse — Active Basin")
