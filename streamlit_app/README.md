@@ -1,6 +1,6 @@
 # HydroSovereign AI Engine (HSAE) — Live Platform (v6.0.14)
 
-[![Streamlit](https://img.shields.io/badge/Streamlit-live-FF4B4B?logo=streamlit&logoColor=white)](https://hydrosovereign-ai-engine-hsae-v602.streamlit.app/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-live-FF4B4B?logo=streamlit&logoColor=white)](https://hydrosovereign-ai-engine-hsae-v602-pysmdygmxj9xn6rpv8lmim.streamlit.app/)
 [![Engine](https://img.shields.io/badge/engine-hydrosovereign%206.8.1-3775A9?logo=pypi&logoColor=white)](https://pypi.org/project/hydrosovereign/)
 [![License](https://img.shields.io/badge/license-GPL--3.0-green.svg)](../LICENSE)
 [![ORCID](https://img.shields.io/badge/ORCID-0000--0003--0821--2991-A6CE39?logo=orcid&logoColor=white)](https://orcid.org/0000-0003-0821-2991)
@@ -54,7 +54,7 @@ for 26 globally-contested transboundary river basins. In one interface it:
 
 ## Live deployment
 
-**App:** https://hydrosovereign-ai-engine-hsae-v602.streamlit.app/
+**App:** https://hydrosovereign-ai-engine-hsae-v602-pysmdygmxj9xn6rpv8lmim.streamlit.app/
 
 The live app redeploys automatically on every push to `main`. To force a
 refresh, open the app's **Manage app -> Reboot** in the Streamlit Cloud console.
@@ -72,7 +72,7 @@ streamlit run app.py
 
 Python 3.10-3.12 is recommended (the live app is pinned to 3.12 via
 `runtime.txt`). The clean engine ships **both** as a bundled local package
-(`streamlit_app/hydrosovereign_hsae/`, including the trained TFDD model) and as
+(`streamlit_app/hydrosovereign/`, including the trained TFDD model) and as
 a PyPI dependency, so the app runs even offline from PyPI.
 
 ---
@@ -157,7 +157,7 @@ The platform calls **`hydrosovereign` 6.8.1** for all
 legally-relevant computation:
 
 ```python
-from hydrosovereign_hsae import (
+from hydrosovereign import (
     DataPoint, DataQuality, DataRegistry,
     hifd_for_basin, compute_atdi, compute_awgi, classify_risk,
     TreatyClassifier, MODEL_CARD, validate_model_skill,
@@ -224,7 +224,7 @@ streamlit_app/
 |- negotiation_ai.py          # TFDD-trained classifier page (honest)
 |- hsae_*.py                  # page modules (science, legal, hbv, ...)
 |- gee_*.py / *_loader.py     # satellite/reanalysis connectors
-|- hydrosovereign_hsae/       # bundled clean engine + trained model
+|- hydrosovereign/            # bundled clean engine 6.8.1 + trained model
 |- data/                      # sample datasets
 ```
 
