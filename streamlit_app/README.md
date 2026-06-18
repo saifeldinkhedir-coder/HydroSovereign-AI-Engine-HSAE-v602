@@ -1,7 +1,7 @@
 # HydroSovereign AI Engine (HSAE) — Live Platform (v6.0.14)
 
 [![Streamlit](https://img.shields.io/badge/Streamlit-live-FF4B4B?logo=streamlit&logoColor=white)](https://hydrosovereign-ai-engine-hsae-v602-pysmdygmxj9xn6rpv8lmim.streamlit.app/)
-[![Engine](https://img.shields.io/badge/engine-hydrosovereign%206.8.1-3775A9?logo=pypi&logoColor=white)](https://pypi.org/project/hydrosovereign/)
+[![Engine](https://img.shields.io/badge/engine-hydrosovereign%206.8.2-3775A9?logo=pypi&logoColor=white)](https://pypi.org/project/hydrosovereign/)
 [![License](https://img.shields.io/badge/license-GPL--3.0-green.svg)](../LICENSE)
 [![ORCID](https://img.shields.io/badge/ORCID-0000--0003--0821--2991-A6CE39?logo=orcid&logoColor=white)](https://orcid.org/0000-0003-0821-2991)
 
@@ -153,7 +153,7 @@ Legal, export & ops pages:
 
 ## The engine underneath
 
-The platform calls **`hydrosovereign` 6.8.1** for all
+The platform calls **`hydrosovereign` 6.8.2** for all
 legally-relevant computation:
 
 ```python
@@ -224,7 +224,7 @@ streamlit_app/
 |- negotiation_ai.py          # TFDD-trained classifier page (honest)
 |- hsae_*.py                  # page modules (science, legal, hbv, ...)
 |- gee_*.py / *_loader.py     # satellite/reanalysis connectors
-|- hydrosovereign/            # bundled clean engine 6.8.1 + trained model
+|- hydrosovereign/            # bundled clean engine 6.8.2 + trained model
 |- data/                      # sample datasets
 ```
 
@@ -258,5 +258,5 @@ streamlit_app/
 
 ---
 
-*HSAE live platform - v6.0.14 - engine `hydrosovereign` 6.8.1 - GPL-3.0 -
+*HSAE live platform - v6.0.14 - engine `hydrosovereign` 6.8.2 - GPL-3.0 -
 Seifeldin M.G. Alkhedir - University of Khartoum - ORCID 0000-0003-0821-2991*
